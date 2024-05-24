@@ -1,0 +1,5 @@
+add_subdirectory(common)
+add_subdirectory(configure)
+add_subdirectory(crypto)
+add_subdirectory(logger)
+add_subdirectory(thread)

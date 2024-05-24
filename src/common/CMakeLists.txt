@@ -1,0 +1,8 @@
+project(kgr_common)
+
+aux_source_directory(. DIR_SOURCES)
+add_library(${PROJECT_NAME} ${DIR_SOURCES})
+
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} ws2_32)
+endif()

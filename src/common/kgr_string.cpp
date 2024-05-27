@@ -24,6 +24,34 @@ namespace kgr {
         return message;
     }
 
+    int hexstring2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen)
+    {
+        auto hex_value = [](char c) {
+            if (c >= '0' && c <= '9') {
+                return c - '0';
+            } else if (c >= 'a' && c <= 'f') {
+                return c - 'a' + 10;
+            } else if (c >= 'A' && c <= 'F') {
+                return c - 'A' + 10;
+            }
+            return 0;
+        };
+
+        int length = 0;
+        int chSize = 0;
+        for (int i = 0; i < srcLen; i++) {
+            if (src[i] == ' ')
+                continue;
+
+            if ((chSize++) % 2 == 0) {
+                dst[length] += (hex_value(src[i]) << 4);
+            } else {
+                dst[length++] += hex_value(src[i]);
+            }
+        }
+        return length;
+    }
+
     int vsnprintf_safe(char *dest, int size, const char *fmt, ...)
     {
         va_list args;

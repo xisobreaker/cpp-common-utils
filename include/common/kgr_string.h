@@ -23,6 +23,12 @@ namespace kgr {
     std::string bytes2hex_string(const unsigned char *buf, unsigned int len);
 
     /**
+     * hex 字符串转 bytes
+     * @param
+     */
+    int hexstring2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
+
+    /**
      * safe vsnprintf
      * @param dest
      * @param size bufsize

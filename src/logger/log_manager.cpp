@@ -1,7 +1,6 @@
 #include "log_manager.h"
 
 #include "config/platform.h"
-#include "dir_iterator.h"
 #include "kgr_filesystem.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
@@ -117,10 +116,10 @@ namespace kgr {
             auto checkTime = kgr::get_current_timestamp_seconds();
             checkTime      = checkTime - m_keepDays * (24 * 60 * 60);
 
-            DirectoryContainer dirContainer(m_filepath.c_str());
-            DirectoryIterator  dirIter = dirContainer.iterator();
+            kgr::filesystem::DirectoryContainer dirContainer(m_filepath.c_str());
+            kgr::filesystem::DirectoryIterator  dirIter = dirContainer.iterator();
             for (dirIter.start(); !dirIter.isDone(); dirIter.toNext()) {
-                DirectoryEntry entry = dirIter.current();
+                kgr::filesystem::DirectoryEntry entry = dirIter.current();
                 if (entry.file_name() == "." || entry.file_name() == "..") {
                     continue;
                 }

@@ -13,15 +13,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/output/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/output/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/output)
 
-set(project_include_dirs
-    "${CMAKE_SOURCE_DIR}/include/common"
-    "${CMAKE_SOURCE_DIR}/include/configure"
-    "${CMAKE_SOURCE_DIR}/include/container"
-    "${CMAKE_SOURCE_DIR}/include/crypto"
-    "${CMAKE_SOURCE_DIR}/include/logger"
-    "${CMAKE_SOURCE_DIR}/include/thread")
+set(KGR_COMMON_INCLUDE_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/include/common"
+    "${CMAKE_CURRENT_LIST_DIR}/include/configure"
+    "${CMAKE_CURRENT_LIST_DIR}/include/container"
+    "${CMAKE_CURRENT_LIST_DIR}/include/crypto"
+    "${CMAKE_CURRENT_LIST_DIR}/include/logger"
+    "${CMAKE_CURRENT_LIST_DIR}/include/thread")
 
-include_directories(${project_include_dirs})
+include_directories(${KGR_COMMON_INCLUDE_DIR})
 
 # 添加子目录
 add_subdirectory(src)

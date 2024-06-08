@@ -5,6 +5,7 @@
 #include "kgr_timer.h"
 #include "log_queue.h"
 
+#include <chrono>
 #include <cstring>
 #include <iomanip>
 #include <sstream>
@@ -112,7 +113,7 @@ namespace kgr {
 
         bool LogManager::removeLogFiles()
         {
-            auto checkTime = kgr::get_current_timestamp_seconds();
+            auto checkTime = kgr::get_current_timestamp<chrono::seconds>();
             checkTime      = checkTime - m_keepDays * (24 * 60 * 60);
 
             kgr::DirectoryContainer dirContainer(m_filepath.c_str());
@@ -143,7 +144,7 @@ namespace kgr {
         void LogManager::loggerWorkerThread()
         {
             while (m_bRunning) {
-                auto curTime = get_current_timestamp_seconds();
+                auto curTime = kgr::get_current_timestamp<chrono::seconds>();
                 if (curTime - m_lastTime > 86400) {
                     m_lastTime = curTime - curTime % 86400;
 

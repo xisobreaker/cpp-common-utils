@@ -13,18 +13,42 @@
 #include <string>
 
 namespace kgr {
-
     /**
      * 获取当前系统时间戳
-     * @return 当前时间戳(秒)
      */
-    uint64_t get_current_timestamp_seconds();
+    template <typename T>
+    inline uint64_t get_current_timestamp()
+    {
+        static_assert(false, "Template types not allowed.");
+        return 0;
+    }
+
+    template <>
+    inline uint64_t get_current_timestamp<std::chrono::seconds>()
+    {
+        auto tp = std::chrono::high_resolution_clock::now().time_since_epoch();
+        return std::chrono::duration_cast<std::chrono::seconds>(tp).count();
+    }
+
+    template <>
+    inline uint64_t get_current_timestamp<std::chrono::milliseconds>()
+    {
+        auto tp = std::chrono::high_resolution_clock::now().time_since_epoch();
+        return std::chrono::duration_cast<std::chrono::milliseconds>(tp).count();
+    }
+
+    template <>
+    inline uint64_t get_current_timestamp<std::chrono::microseconds>()
+    {
+        auto tp = std::chrono::high_resolution_clock::now().time_since_epoch();
+        return std::chrono::duration_cast<std::chrono::microseconds>(tp).count();
+    }
 
     /**
-     * 获取当前系统时间戳
-     * @return 当前时间戳(毫秒)
+     * 获取当前格式化后的时间戳
+     * @return YYYY-MM-DD HH:mm:ss.SSSSSS
      */
-    uint64_t get_current_timestamp_millis();
+    std::string get_format_datetime(uint32_t sec, uint32_t usec);
 
     /**
      * 获取当前格式化后的时间戳

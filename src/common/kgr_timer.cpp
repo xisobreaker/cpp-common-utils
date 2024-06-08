@@ -3,20 +3,20 @@
 #include "config/platform.h"
 #include "kgr_string.h"
 
+#include <chrono>
 #include <iomanip>
 
 namespace kgr {
 
-    uint64_t get_current_timestamp_seconds()
+    std::string get_format_datetime(uint32_t sec, uint32_t usec)
     {
-        auto tp = std::chrono::high_resolution_clock::now().time_since_epoch();
-        return std::chrono::duration_cast<std::chrono::seconds>(tp).count();
-    }
+        time_t timer = sec;
 
-    uint64_t get_current_timestamp_millis()
-    {
-        auto tp = std::chrono::high_resolution_clock::now().time_since_epoch();
-        return std::chrono::duration_cast<std::chrono::milliseconds>(tp).count();
+        std::ostringstream oss;
+        char               datetime[32] = {0};
+        std::strftime(datetime, 32, "%Y-%m-%d %H:%M:%S", std::localtime(&timer));
+        oss << datetime << "." << std::setfill('0') << std::setw(6) << usec;
+        return oss.str();
     }
 
     std::string get_current_format_datetime()

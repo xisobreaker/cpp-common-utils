@@ -16,6 +16,7 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <cstdint>
 
 namespace kgr {
     namespace config {
@@ -198,12 +199,12 @@ namespace kgr {
         /**
          * 读取配置文件
          */
-        bool read_configuration_file(const std::string &filename, PropertyTree &pt);
+        bool read_profile(const std::string &filename, PropertyTree &pt);
 
         /**
          * 写入配置文件
          */
-        bool write_configuration_file(const std::string &filename, const PropertyTree &pt);
+        bool write_profile(const std::string &filename, const PropertyTree &pt);
 
     } // namespace config
 } // namespace kgr

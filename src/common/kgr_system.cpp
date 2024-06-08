@@ -1,6 +1,8 @@
 #include "kgr_system.h"
 
 #if defined(KGR_PLATFORM_LINUX)
+    #include <signal.h>
+
 void sig_process(int signo, void (*handler)(int))
 {
     struct sigaction sa;

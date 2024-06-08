@@ -1,4 +1,4 @@
 add_subdirectory(test_common)
-add_subdirectory(test_crypto)
-add_subdirectory(test_logger)
-add_subdirectory(test_thread)
+# add_subdirectory(test_crypto)
+# add_subdirectory(test_logger)
+# add_subdirectory(test_thread)

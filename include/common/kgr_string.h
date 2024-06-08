@@ -9,10 +9,48 @@
 
 #pragma once
 
+#include <iomanip>
+#include <limits>
+#include <sstream>
 #include <string>
 #include <vector>
 
 namespace kgr {
+    /**
+     * 浮点数按照精度转换为字符串类型
+     * @param number 输入浮点型数字
+     * @param limits 输出数字精度(整数加小数)
+     * @return std::string 转换完成的字符串
+     */
+    template <typename T>
+    std::string decimal2string(T number, int limits = 0)
+    {
+        int digits = limits > 0 ? limits : std::numeric_limits<T>::digits10;
+
+        // 数字转字符串
+        std::ostringstream oss;
+        oss.precision(digits);
+        oss << std::setbase(10) << number;
+        std::string strNum = oss.str();
+
+        if (strNum.find('.') != std::string::npos) {
+            std::string::reverse_iterator rit = strNum.rbegin();
+            while (rit != strNum.rend()) {
+                if (*rit != '0') {
+                    if (*rit == '.')
+                        rit++;
+                    break;
+                }
+                rit++;
+            }
+
+            if (rit != strNum.rbegin()) {
+                std::string::iterator it = rit.base();
+                strNum.erase(it, strNum.end());
+            }
+        }
+        return strNum;
+    }
 
     /**
      * 十六进制数据转 hex
@@ -23,8 +61,12 @@ namespace kgr {
     std::string bytes2hex_string(const unsigned char *buf, unsigned int len);
 
     /**
-     * hex 字符串转 bytes
-     * @param
+     * hex 字符串转 byte 数组
+     * @param dst
+     * @param dstLen 最大长度
+     * @param src 源数据
+     * @param srcLen 源数据长度
+     * @return 实际数据长度
      */
     int hexstring2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
 

@@ -1,7 +1,5 @@
 #include "log_message.h"
 
-#include "config/platform.h"
-#include "kgr_string.h"
 #include "log_constants.h"
 
 #include <cstdarg>

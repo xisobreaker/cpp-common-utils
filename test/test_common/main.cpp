@@ -1,17 +1,16 @@
+#include "kgr_assert.h"
 #include "kgr_string.h"
 
 #include <cassert>
-
-#define EXPECT_EQ(a, b) (assert(a == b))
 
 void test_string()
 {
     std::string message = ";RTP/AVP;multicast;;ttl=127;";
     auto        vecStrs = kgr::string_split(message, ";");
 
-    EXPECT_EQ(vecStrs[0], "RTP/AVP");
-    EXPECT_EQ(vecStrs[1], "multicast");
-    EXPECT_EQ(vecStrs[2], "ttl=127");
+    kgr::assert_strequal(vecStrs[0].c_str(), "RTP/AVP");
+    kgr::assert_strequal(vecStrs[1].c_str(), "multicast");
+    kgr::assert_strequal(vecStrs[2].c_str(), "ttl=127");
 }
 
 void test_hex_string()
@@ -20,12 +19,13 @@ void test_hex_string()
     unsigned char buffer[1024] = {0};
 
     int len = kgr::hexstring2bytes(buffer, 1024, str.c_str(), str.length());
-    EXPECT_EQ(buffer[0], 0x01);
-    EXPECT_EQ(buffer[1], 0x00);
-    EXPECT_EQ(buffer[2], 0x5E);
-    EXPECT_EQ(buffer[3], 0x00);
-    EXPECT_EQ(buffer[4], 0x01);
-    EXPECT_EQ(buffer[5], 0x8C);
+
+    kgr::assert_equal(buffer[0], (unsigned char)0x01);
+    kgr::assert_equal(buffer[1], (unsigned char)0x00);
+    kgr::assert_equal(buffer[2], (unsigned char)0x5E);
+    kgr::assert_equal(buffer[3], (unsigned char)0x00);
+    kgr::assert_equal(buffer[4], (unsigned char)0x01);
+    kgr::assert_equal(buffer[5], (unsigned char)0x8C);
 }
 
 int main(int argc, char *argv[])

@@ -12,7 +12,6 @@
 #include "config/platform.h"
 
 #if defined(KGR_PLATFORM_LINUX)
-    #include <signal.h>
 
 /**
  * UNIX 信号处理

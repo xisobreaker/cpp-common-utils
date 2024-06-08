@@ -27,7 +27,7 @@ namespace kgr {
             return m_properties[section].at(key);
         }
 
-        bool read_configuration_file(const std::string &filename, PropertyTree &pt)
+        bool read_profile(const std::string &filename, PropertyTree &pt)
         {
             std::ifstream ifile(filename);
             if (!ifile.is_open())
@@ -62,7 +62,7 @@ namespace kgr {
             return true;
         }
 
-        bool write_configuration_file(const std::string &filename, const PropertyTree &pt)
+        bool write_profile(const std::string &filename, const PropertyTree &pt)
         {
             std::ofstream ofile(filename);
             if (!ofile.is_open())
@@ -75,6 +75,7 @@ namespace kgr {
                     std::string property = prop.first + " = " + prop.second.asString() + "\n";
                     ofile.write(property.c_str(), property.length());
                 }
+                ofile.write("\n", 1);
             }
             ofile.close();
             return true;

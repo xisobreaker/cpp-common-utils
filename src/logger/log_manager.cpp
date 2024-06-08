@@ -1,6 +1,5 @@
 #include "log_manager.h"
 
-#include "config/platform.h"
 #include "kgr_filesystem.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
@@ -49,7 +48,7 @@ namespace kgr {
             }
 
             // 递归创建日志目录
-            kgr::filesystem::create_directory_recurse(filename.substr(0, pos));
+            kgr::create_directory_recurse(filename.substr(0, pos));
             m_filepath  = filename.substr(0, pos + 1);
             m_filename  = filename.substr(pos + 1, filename.length());
             m_bWriteLog = true;
@@ -116,10 +115,10 @@ namespace kgr {
             auto checkTime = kgr::get_current_timestamp_seconds();
             checkTime      = checkTime - m_keepDays * (24 * 60 * 60);
 
-            kgr::filesystem::DirectoryContainer dirContainer(m_filepath.c_str());
-            kgr::filesystem::DirectoryIterator  dirIter = dirContainer.iterator();
+            kgr::DirectoryContainer dirContainer(m_filepath.c_str());
+            kgr::DirectoryIterator  dirIter = dirContainer.iterator();
             for (dirIter.start(); !dirIter.isDone(); dirIter.toNext()) {
-                kgr::filesystem::DirectoryEntry entry = dirIter.current();
+                kgr::DirectoryEntry entry = dirIter.current();
                 if (entry.file_name() == "." || entry.file_name() == "..") {
                     continue;
                 }
@@ -134,7 +133,7 @@ namespace kgr {
                     timeinfo.tm_mday = atoi(filename.substr(position + 7, 2).c_str());
 
                     if (checkTime > mktime(&timeinfo)) {
-                        kgr::filesystem::remove_file((m_filepath + filename).c_str());
+                        kgr::remove_file((m_filepath + filename).c_str());
                     }
                 }
             }

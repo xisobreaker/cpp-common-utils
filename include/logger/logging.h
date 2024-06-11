@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "kgr_filesystem.h"
+#include "kgr_file.h"
 #include "kgr_timer.h"
 #include "log_manager.h"
 

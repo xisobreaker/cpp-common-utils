@@ -5,6 +5,7 @@
 #include "kgr_timer.h"
 #include "properties.h"
 
+#include <chrono>
 #include <cstdint>
 #include <iostream>
 
@@ -37,8 +38,16 @@ void test_hex_string()
 
 void test_timer()
 {
-    uint32_t    sec      = 1717861911;
-    uint32_t    usec     = 100664;
-    std::string datetime = kgr::get_format_datetime(sec, usec);
+    std::chrono::seconds      sec(1717861911);
+    std::chrono::milliseconds msec(1717861911100);
+    std::chrono::microseconds usec(1717861911100664);
+
+    std::string datetime = "";
+
+    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(sec));
+    kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.000000");
+    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(msec));
+    kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100000");
+    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(usec));
     kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100664");
 }

@@ -18,6 +18,7 @@ set(KGR_COMMON_INCLUDE_DIR
     "${CMAKE_CURRENT_LIST_DIR}/include/configure"
     "${CMAKE_CURRENT_LIST_DIR}/include/container"
     "${CMAKE_CURRENT_LIST_DIR}/include/crypto"
+    "${CMAKE_CURRENT_LIST_DIR}/include/filesystem"
     "${CMAKE_CURRENT_LIST_DIR}/include/logger"
     "${CMAKE_CURRENT_LIST_DIR}/include/thread")
 

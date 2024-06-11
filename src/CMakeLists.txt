@@ -1,5 +1,6 @@
 add_subdirectory(common)
 add_subdirectory(configure)
+add_subdirectory(container)
 add_subdirectory(crypto)
 add_subdirectory(filesystem)
 add_subdirectory(logger)

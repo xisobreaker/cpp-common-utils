@@ -2,6 +2,7 @@
 
 #include "kgr_diriterator.h"
 #include "kgr_file.h"
+#include "kgr_filesystem.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
 #include "log_queue.h"
@@ -50,7 +51,7 @@ namespace kgr {
             }
 
             // 递归创建日志目录
-            kgr::create_directory_recurse(filename.substr(0, pos));
+            kgr::filesystem::create_directory_recurse(filename.substr(0, pos));
             m_filepath  = filename.substr(0, pos + 1);
             m_filename  = filename.substr(pos + 1, filename.length());
             m_bWriteLog = true;

@@ -21,7 +21,7 @@
         do {                                                                                                              \
             kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                       \
             std::string           datetime   = kgr::get_current_format_datetime();                                        \
-            const char           *basename   = kgr::filesystem::extract_file_name(__FILE__);                              \
+            const char           *basename   = kgr::extract_file_name(__FILE__);                                          \
             logManager->logRecord(                                                                                        \
                 kgr::log::LOG_LEVEL_DEBUG, "[%s][%s:%d][D]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)
@@ -30,7 +30,7 @@
         do {                                                                                                                               \
             kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                                        \
             std::string           datetime   = kgr::get_current_format_datetime();                                                         \
-            const char           *basename   = kgr::filesystem::extract_file_name(__FILE__);                                               \
+            const char           *basename   = kgr::extract_file_name(__FILE__);                                                           \
             logManager->logRecord(kgr::log::LOG_LEVEL_INFO, "[%s][%s:%d][I]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)
 
@@ -38,7 +38,7 @@
         do {                                                                                                                               \
             kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                                        \
             std::string           datetime   = kgr::get_current_format_datetime();                                                         \
-            const char           *basename   = kgr::filesystem::extract_file_name(__FILE__);                                               \
+            const char           *basename   = kgr::extract_file_name(__FILE__);                                                           \
             logManager->logRecord(kgr::log::LOG_LEVEL_WARN, "[%s][%s:%d][W]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)
 
@@ -46,7 +46,7 @@
         do {                                                                                                              \
             kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                       \
             std::string           datetime   = kgr::get_current_format_datetime();                                        \
-            const char           *basename   = kgr::filesystem::extract_file_name(__FILE__);                              \
+            const char           *basename   = kgr::extract_file_name(__FILE__);                                          \
             logManager->logRecord(                                                                                        \
                 kgr::log::LOG_LEVEL_ERROR, "[%s][%s:%d][E]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     int         threadnum = 10;
     std::thread threads[threadnum];
-    auto        startTime = kgr::get_current_timestamp_millis();
+    auto        startTime = kgr::get_current_timestamp<chrono::milliseconds>();
     for (int i = 0; i < threadnum; i++) {
         threads[i] = std::thread([&]() {
             thread::id    tid = this_thread::get_id();
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < threadnum; i++) {
         threads[i].join();
     }
-    auto endTime = kgr::get_current_timestamp_millis();
+    auto endTime = kgr::get_current_timestamp<chrono::milliseconds>();
     std::cout << "cost ms: " << endTime - startTime << std::endl;
     this_thread::sleep_for(chrono::milliseconds(500));
     return 0;

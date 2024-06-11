@@ -403,7 +403,7 @@ namespace kgr {
                 }
                 char *tmpBuf = (char *)malloc(dstLen * 2);
                 memset(tmpBuf, 0, dstLen * 2);
-                if (base64_encode(dstBuf, dstLen, tmpBuf, dstLen * 2) != -1) {
+                if (base64_encode(tmpBuf, dstLen * 2, dstBuf, dstLen) != -1) {
                     strMsg = tmpBuf;
                 }
                 if (tmpBuf != NULL) {
@@ -422,7 +422,7 @@ namespace kgr {
             int   dstLen    = 0;
 
             memset(tmpBuf, 0, tmpMaxLen);
-            tmpLen = base64_decode(strMsg.c_str(), strMsg.length(), tmpBuf, tmpMaxLen);
+            tmpLen = base64_decode(tmpBuf, tmpMaxLen, strMsg.c_str(), strMsg.length());
             if (tmpLen == -1) {
                 return -1;
             }

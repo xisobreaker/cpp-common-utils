@@ -20,7 +20,7 @@ namespace kgr {
          * @param dstBuf 编码完成后的数据
          * @param dstMaxLen dstBuf缓存最大长度
          */
-        int base64_encode(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen);
+        int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 
         /**
          * base64解码
@@ -29,7 +29,7 @@ namespace kgr {
          * @param dstBuf 解码完成后的数据
          * @param dstMaxLen dstBuf缓存最大长度
          */
-        int base64_decode(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen);
+        int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 
     } // namespace crypto
 } // namespace kgr

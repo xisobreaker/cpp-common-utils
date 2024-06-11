@@ -14,7 +14,7 @@
 namespace kgr {
     namespace crypto {
 
-        int base64_encode(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
+        int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen)
         {
             static constexpr unsigned char BASE64_MAP_ASC[64] = {
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -46,7 +46,7 @@ namespace kgr {
             return dstLen;
         }
 
-        int base64_decode(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
+        int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen)
         {
             static constexpr unsigned char BASE64_MAP_DESC[256] = {
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

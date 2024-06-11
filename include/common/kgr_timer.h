@@ -9,17 +9,21 @@
 
 #pragma once
 
+#include <cassert>
 #include <chrono>
 #include <string>
 
 namespace kgr {
+    template <typename>
+    constexpr bool dependent_false = false;
+
     /**
      * 获取当前系统时间戳
      */
     template <typename T>
     inline uint64_t get_current_timestamp()
     {
-        static_assert(false, "Template types not allowed.");
+        static_assert(dependent_false<T>, "Template types not allowed.");
         return 0;
     }
 

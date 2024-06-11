@@ -3,6 +3,7 @@
 #include "kgr_assert.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
+#include "properties.h"
 
 #include <cstdint>
 #include <iostream>
@@ -22,7 +23,7 @@ void test_hex_string()
     std::string   str          = "01 00 5E 00 01 8C";
     unsigned char buffer[1024] = {0};
 
-    int len = kgr::hexstring2bytes(buffer, 1024, str.c_str(), str.length());
+    int len = kgr::hexstr2bytes(buffer, 1024, str.c_str(), str.length());
     kgr_assert_equal(buffer[0], 0x01);
     kgr_assert_equal(buffer[1], 0x00);
     kgr_assert_equal(buffer[2], 0x5E);
@@ -30,7 +31,7 @@ void test_hex_string()
     kgr_assert_equal(buffer[4], 0x01);
     kgr_assert_equal(buffer[5], 0x8C);
 
-    std::string packet = kgr::bytes2hex_string(buffer, len);
+    std::string packet = kgr::bytes2hexstr(buffer, len);
     kgr_assert_strequal(str.c_str(), packet.c_str());
 }
 

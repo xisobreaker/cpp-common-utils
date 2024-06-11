@@ -1,4 +1,5 @@
 add_subdirectory(test_common)
+add_subdirectory(test_configure)
 add_subdirectory(test_crypto)
 add_subdirectory(test_logger)
 add_subdirectory(test_thread)

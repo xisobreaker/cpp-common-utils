@@ -58,7 +58,7 @@ namespace kgr {
      * @param len 数据长度
      * @return hex 字符串
      */
-    std::string bytes2hex_string(const unsigned char *buf, unsigned int len);
+    std::string bytes2hexstr(const unsigned char *buf, unsigned int len);
 
     /**
      * hex 字符串转 byte 数组
@@ -68,7 +68,7 @@ namespace kgr {
      * @param srcLen 源数据长度
      * @return 实际数据长度
      */
-    int hexstring2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
+    int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
 
     /**
      * safe vsnprintf
@@ -107,7 +107,7 @@ namespace kgr {
      * @param start 起始字符串
      * @return true/false
      */
-    bool string_starts_with(const std::string &str, std::string start);
+    bool string_startswith(const std::string &str, std::string start);
 
     /**
      * string 结束字符串判断
@@ -115,5 +115,5 @@ namespace kgr {
      * @param end 结束字符串
      * @return true/false
      */
-    bool string_end_with(const std::string &str, std::string end);
+    bool string_endswith(const std::string &str, std::string end);
 } // namespace kgr

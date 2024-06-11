@@ -125,7 +125,7 @@ namespace kgr {
                 }
 
                 std::string filename = entry.file_name();
-                if (!entry.is_directory() && string_starts_with(filename, m_filename)) {
+                if (!entry.is_directory() && string_startswith(filename, m_filename)) {
                     int position = filename.rfind('.');
 
                     struct tm timeinfo;

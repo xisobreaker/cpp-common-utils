@@ -6,7 +6,7 @@
 
 namespace kgr {
 
-    std::string bytes2hex_string(const unsigned char *buf, unsigned int len)
+    std::string bytes2hexstr(const unsigned char *buf, unsigned int len)
     {
         // hex 转换表
         static const char hex_table[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -24,7 +24,7 @@ namespace kgr {
         return message;
     }
 
-    int hexstring2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen)
+    int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen)
     {
         auto hex_value = [](char c) {
             if (c >= '0' && c <= '9') {
@@ -108,7 +108,7 @@ namespace kgr {
         return message;
     }
 
-    bool string_starts_with(const std::string &str, std::string start)
+    bool string_startswith(const std::string &str, std::string start)
     {
         auto startLen = start.length();
         if (str.length() >= startLen) {
@@ -118,7 +118,7 @@ namespace kgr {
         return false;
     }
 
-    bool string_end_with(const std::string &str, std::string end)
+    bool string_endswith(const std::string &str, std::string end)
     {
         auto endLen = end.length();
         if (str.length() >= endLen) {

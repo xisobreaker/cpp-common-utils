@@ -37,11 +37,11 @@ namespace kgr {
             std::string section = "";
             while (std::getline(ifile, line)) {
                 line = string_trim(line, ' ');
-                if (string_starts_with(line, "#"))
+                if (string_startswith(line, "#"))
                     continue;
 
-                if (string_starts_with(line, "[")) {
-                    if (!string_end_with(line, "]"))
+                if (string_startswith(line, "[")) {
+                    if (!string_endswith(line, "]"))
                         continue;
 
                     section = line.substr(1, line.length() - 2);

@@ -15,17 +15,17 @@
 #include <cstring>
 
 #define kgr_assert_equal(a, b)                                                                         \
-    {                                                                                                  \
+    do {                                                                                               \
         if ((a) != (b)) {                                                                              \
             std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
             std::abort();                                                                              \
         }                                                                                              \
-    }
+    } while (false)
 
 #define kgr_assert_strequal(a, b)                                                                      \
-    {                                                                                                  \
+    do {                                                                                               \
         if (strcmp(a, b) != 0) {                                                                       \
             std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
             std::abort();                                                                              \
         }                                                                                              \
-    }
+    } while (false)

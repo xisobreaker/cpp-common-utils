@@ -10,6 +10,7 @@
     #include <sys/stat.h>
     #include <unistd.h>
 #elif defined(KGR_PLATFORM_WINDOWS)
+    #include <Windows.h>
     #include <io.h>
 #endif
 
@@ -43,7 +44,6 @@ namespace kgr {
 #elif defined(KGR_PLATFORM_WINDOWS)
         return _access(filepath, F_OK) != -1;
 #endif
-        return false;
     }
 
     bool path_is_exists(const char *directory)
@@ -55,8 +55,8 @@ namespace kgr {
             return true;
         }
 #elif defined(KGR_PLATFORM_WINDOWS)
+        return (access(directory, F_OK) != -1);
 #endif
-        return false;
     }
 
     void create_directory(const char *directory)

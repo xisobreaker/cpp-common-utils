@@ -10,6 +10,7 @@
     #include <sys/stat.h>
     #include <unistd.h>
 #elif defined(KGR_PLATFORM_WINDOWS)
+    #include <Windows.h>
     #include <io.h>
 #endif
 
@@ -18,7 +19,7 @@ namespace kgr {
 
         void create_directory_recurse(const std::string &directory)
         {
-            unsigned long pos = directory.rfind('/');
+            unsigned long long pos = directory.rfind('/');
 #if defined(KGR_PLATFORM_WINDOWS)
             if (pos == std::string::npos) {
                 pos = directory.rfind('\\');

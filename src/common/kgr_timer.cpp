@@ -49,7 +49,10 @@ namespace kgr {
 
         struct tm timeinfo = {0, 0, 0, 1, 0, 70};
         if (datetime.find(" ") != std::string::npos) {
+#if defined(KGR_PLATFORM_LINUX)
             strptime(datetime.c_str(), "%Y-%m-%d %H:%M:%S", &timeinfo);
+#elif defined(KGR_PLATFORM_WINDOWS)
+#endif
         } else {
             if (datetime.find("-") != std::string::npos) {
                 std::vector<std::string> vecString = kgr::string_split(datetime, "-");

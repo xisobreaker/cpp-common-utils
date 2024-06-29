@@ -3,11 +3,8 @@
 #include "kgr_assert.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
-#include "properties.h"
 
 #include <chrono>
-#include <cstdint>
-#include <iostream>
 
 void test_string_split()
 {

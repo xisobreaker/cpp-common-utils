@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "config/platform.h"
-
 #include <string>
 
 namespace kgr {

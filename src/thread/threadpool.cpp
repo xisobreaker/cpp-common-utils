@@ -1,7 +1,5 @@
 #include "threadpool.h"
 
-#include <mutex>
-
 namespace kgr {
     namespace thread {
         ThreadPool::ThreadPool(int threadNum, int taskSize) : m_threadNum(threadNum), m_maxTaskSize(taskSize), m_runFlags(false)

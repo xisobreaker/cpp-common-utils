@@ -10,6 +10,7 @@
 #pragma once
 
 #include <functional>
+
 namespace kgr {
     namespace thread {
         class IThreadTask

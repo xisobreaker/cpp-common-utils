@@ -47,4 +47,7 @@ void test_timer()
     kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100000");
     datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(usec));
     kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100664");
+
+    uint64_t microsec = kgr::string_format_time("YYYY-MM-DD HH:mm:ss.SSSSSS", datetime);
+    kgr_assert_equal(microsec, 1717861911100664);
 }

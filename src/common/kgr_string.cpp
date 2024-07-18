@@ -3,6 +3,7 @@
 #include "config/platform.h"
 
 #include <cstdarg>
+#include <cstring>
 
 namespace kgr {
 
@@ -80,6 +81,84 @@ std::vector<std::string> str_split(const std::string &msg, std::string separator
     if (start != msg.length())
         vecStrings.push_back(msg.substr(start));
     return vecStrings;
+}
+
+char *str_split_values(char *str, char sep, const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+
+    while (*str == sep)
+        str++;
+
+    while (*fmt) {
+        char         **s, *tmp;
+        int           *i;
+        long long int *l;
+        time_t        *t;
+
+        switch (*fmt++) {
+            case 's':
+                s   = va_arg(args, char **);
+                *s  = str;
+                tmp = strchr(str, sep);
+                if (tmp) {
+                    while (*tmp == sep) {
+                        *tmp++ = '\0';
+                    }
+                } else {
+                    str = &str[strlen(str)];
+                }
+                break;
+            case 'l':
+                l  = va_arg(args, long long int *);
+                *l = strtoll(str, &tmp, 10);
+                if (tmp == str) {
+                    *str = 0;
+                } else {
+                    str = tmp;
+                }
+                break;
+            case 'i':
+                i  = va_arg(args, int *);
+                *i = strtol(str, &tmp, 10);
+                if (tmp == str) {
+                    *str = 0;
+                } else {
+                    str = tmp;
+                }
+                break;
+            case 't':
+                t  = va_arg(args, time_t *);
+                *t = strtol(str, &tmp, 10);
+                if (tmp == str) {
+                    *str = 0;
+                } else {
+                    str = tmp;
+                    switch (*str) {
+                        case 'd':
+                            *t *= 86400;
+                            (*str)++;
+                            break;
+                        case 'h':
+                            *t *= 3600;
+                            (*str)++;
+                            break;
+                        case 'm':
+                            *t *= 60;
+                            (*str)++;
+                            break;
+                    }
+                }
+                break;
+        }
+
+        while (*str == sep) {
+            str++;
+        }
+    }
+    va_end(args);
+    return str;
 }
 
 std::string str_trim(const std::string &msg, const char ch)

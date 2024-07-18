@@ -3,7 +3,7 @@
 #include "kgr_assert.h"
 #include "kgr_string.h"
 
-void test_string_split()
+void test_str_split()
 {
     std::string message = ";RTP/AVP;multicast;;ttl=127;";
     auto        vecStrs = kgr::str_split(message, ";");
@@ -30,16 +30,39 @@ void test_hex_string()
     kgr_assert_strequal(str.c_str(), packet.c_str());
 }
 
-void test_string_format()
+void test_str_format()
 {
     std::string world = "World";
     std::string msg   = kgr::str_format("Hello, %s", world.c_str());
     kgr_assert_strequal("Hello, World", msg.c_str());
 }
 
+void test_str_split_values()
+{
+    char         *username;
+    long long int sess_id;
+    long long int sess_version;
+    char         *nettype;
+    char         *addrtype;
+    char         *addr;
+
+    char message[] = "- 2256453820 2256453820 IN IP4 0.0.0.0";
+
+    char *str = kgr::str_split_values(message, ' ', "sllsss", &username, &sess_id, &sess_version, &nettype, &addrtype, &addr);
+    printf("message     : %s\n", message);
+    printf("str         : %s\n", str);
+    printf("username    : %s\n", username);
+    printf("sess_id     : %lld\n", sess_id);
+    printf("sess_version: %lld\n", sess_version);
+    printf("nettype     : %s\n", nettype);
+    printf("addrtype    : %s\n", addrtype);
+    printf("addr        : %s\n", addr);
+}
+
 void test_string_all()
 {
-    test_string_split();
+    test_str_split();
     test_hex_string();
-    test_string_format();
+    test_str_format();
+    test_str_split_values();
 }

@@ -1,7 +1,5 @@
 #include "threadpool.h"
 
-#include <mutex>
-
 namespace kgr {
 namespace thread {
 

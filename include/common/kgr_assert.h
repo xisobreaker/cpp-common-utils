@@ -9,9 +9,7 @@
 
 #pragma once
 
-#include "kgr_file.h"
-
-#include <cassert>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 
@@ -25,7 +23,7 @@
 
 #define kgr_assert_strequal(a, b)                                                                      \
     do {                                                                                               \
-        if (strcmp(a, b) != 0) {                                                                       \
+        if (std::strcmp(a, b) != 0) {                                                                  \
             std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
             std::abort();                                                                              \
         }                                                                                              \

@@ -10,6 +10,7 @@
     #include <sys/stat.h>
     #include <unistd.h>
 #elif defined(KGR_PLATFORM_WINDOWS)
+    #include <Windows.h>
     #include <io.h>
 #endif
 
@@ -55,6 +56,7 @@ bool path_is_exists(const char *directory)
         return true;
     }
 #elif defined(KGR_PLATFORM_WINDOWS)
+    return (access(directory, F_OK) != -1);
 #endif
     return false;
 }

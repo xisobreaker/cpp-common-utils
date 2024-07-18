@@ -34,44 +34,61 @@ std::string get_current_format_datetime()
     return timepoint_format(tp);
 }
 
-uint64_t datetime_to_timestamp(std::string datetime)
+uint64_t string_format_time(std::string format, const std::string &datetime)
 {
-    uint16_t milliseconds = 0;
-    auto     pos          = datetime.find(".");
-    if (pos != std::string::npos) {
-        std::string ms = datetime.substr(pos + 1);
-        milliseconds   = atoi(ms.c_str());
-        datetime       = datetime.substr(0, pos);
-    }
-    if (datetime.find("T") != std::string::npos) {
-        kgr::str_replace(datetime, "T", " ");
-    }
+    auto conv_ch = [](char c) {
+        return c - '0';
+    };
 
-    struct tm timeinfo = {0, 0, 0, 1, 0, 70};
-    if (datetime.find(" ") != std::string::npos) {
-        strptime(datetime.c_str(), "%Y-%m-%d %H:%M:%S", &timeinfo);
-    } else {
-        if (datetime.find("-") != std::string::npos) {
-            std::vector<std::string> vecString = kgr::str_split(datetime, "-");
-            if (vecString.size() > 0)
-                timeinfo.tm_year = std::atoi(vecString[0].c_str()) - 1900;
-            if (vecString.size() > 1)
-                timeinfo.tm_mon = std::atoi(vecString[1].c_str()) - 1;
-            if (vecString.size() > 2)
-                timeinfo.tm_mday = std::atoi(vecString[2].c_str());
-        } else if (datetime.find(":") != std::string::npos) {
-            std::vector<std::string> vecString = kgr::str_split(datetime, ":");
-            if (vecString.size() > 0)
-                timeinfo.tm_hour = std::atoi(vecString[0].c_str());
-            if (vecString.size() > 1)
-                timeinfo.tm_min = std::atoi(vecString[1].c_str());
-            if (vecString.size() > 2)
-                timeinfo.tm_sec = std::atoi(vecString[2].c_str());
+    std::string seps           = "-:.";
+    struct tm   timeinfo       = {0, 0, 0, 0, 0, 0};
+    char        microsecond[7] = "000000";
+    int         microIndex     = 0;
+
+    for (int i = 0; i < format.size(); i++) {
+        while (format.size() > i && seps.find(format.at(i), 0) == std::string::npos) {
+            switch (format.at(i)) {
+                case 'Y':
+                    timeinfo.tm_year = timeinfo.tm_year * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 'M':
+                    timeinfo.tm_mon = timeinfo.tm_mon * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 'D':
+                    timeinfo.tm_mday = timeinfo.tm_mday * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 'H':
+                    timeinfo.tm_hour = timeinfo.tm_hour * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 'm':
+                    timeinfo.tm_min = timeinfo.tm_min * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 's':
+                    timeinfo.tm_sec = timeinfo.tm_sec * 10 + conv_ch(datetime.at(i));
+                    break;
+                case 'S':
+                    if (datetime.size() > i) {
+                        microsecond[microIndex++] = datetime.at(i);
+                    }
+                    break;
+            }
+            ++i;
         }
     }
 
-    time_t timer = mktime(&timeinfo);
-    return (uint64_t)timer * 1000 + (uint64_t)milliseconds;
+    if (timeinfo.tm_year > 0)
+        timeinfo.tm_year -= 1900;
+    if (timeinfo.tm_mon > 0)
+        timeinfo.tm_mon -= 1;
+
+    if (timeinfo.tm_year < 70)
+        timeinfo.tm_year = 70;
+    if (timeinfo.tm_mday == 0)
+        timeinfo.tm_mday = 1;
+
+    time_t   timer = mktime(&timeinfo);
+    uint32_t usec  = std::stoi(microsecond);
+    return (uint64_t)timer * 1000000 + usec;
 }
 
 } // namespace kgr

@@ -103,10 +103,12 @@ namespace kgr {
 
     /**
      * 字符串时间转为时间戳
+     * %YYYY-%MM-%DDT%HH:%mm:%ss.%SSSSSS
+     * @param format 格式化
      * @param datetime 日期时间
      * @return 毫秒时间戳
      */
-    uint64_t datetime_to_timestamp(std::string datetime);
+    uint64_t string_format_time(std::string format, const std::string &datetime);
 
     /**
      * @brief 计算表达式耗时

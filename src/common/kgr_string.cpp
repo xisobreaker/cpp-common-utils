@@ -106,6 +106,7 @@ char *str_split_values(char *str, char sep, const char *fmt, ...)
                     while (*tmp == sep) {
                         *tmp++ = '\0';
                     }
+                    str = tmp;
                 } else {
                     str = &str[strlen(str)];
                 }

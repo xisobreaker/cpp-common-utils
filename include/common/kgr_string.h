@@ -90,13 +90,13 @@ std::vector<std::string> str_split(const std::string &msg, std::string separator
 /**
  * @brief 格式化分割字符串
  *
- * @param str
+ * @param str 原始字符串
  * @param sep
  * @param fmt
  * @param ...
  * @return char*
  */
-char *str_split_values(char *str, char sep, const char *fmt, ...);
+char *str_split_values(const char *str, char sep, const char *fmt, ...);
 
 /**
  * @brief 修剪左右两端字符

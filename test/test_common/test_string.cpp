@@ -49,7 +49,6 @@ void test_str_split_values()
     char message[] = "- 2256453820 2256453820 IN IP4 0.0.0.0";
 
     char *str = kgr::str_split_values(message, ' ', "sllsss", &username, &sess_id, &sess_version, &nettype, &addrtype, &addr);
-    printf("message     : %s\n", message);
     printf("str         : %s\n", str);
     printf("username    : %s\n", username);
     printf("sess_id     : %lld\n", sess_id);

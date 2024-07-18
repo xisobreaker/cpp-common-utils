@@ -13,6 +13,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <iostream>
 
 #define kgr_assert_equal(a, b)                                                                         \
     do {                                                                                               \

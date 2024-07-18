@@ -16,29 +16,29 @@
 #include <queue>
 
 namespace kgr {
-    namespace log {
+namespace log {
 
-        class LogQueue
-        {
-        public:
-            LogQueue();
-            virtual ~LogQueue();
+class LogQueue
+{
+public:
+    LogQueue();
+    virtual ~LogQueue();
 
-        public:
-            LogMessage *getConsumer(uint32_t waitMs);
-            void        putConsumer(LogMessage *logMessage);
-            LogMessage *getProducer();
-            void        putProducer(LogMessage *logMessage);
-            size_t      getConsumerSize();
-            size_t      getProducerSize();
+public:
+    LogMessage *getConsumer(uint32_t waitMs);
+    void        putConsumer(LogMessage *logMessage);
+    LogMessage *getProducer();
+    void        putProducer(LogMessage *logMessage);
+    size_t      getConsumerSize();
+    size_t      getProducerSize();
 
-        private:
-            std::deque<LogMessage *> m_producerQueue;
-            std::deque<LogMessage *> m_consumerQueue;
-            std::mutex               m_producerLock;
-            std::mutex               m_consumerLock;
-            std::condition_variable  m_consumerCond;
-        };
+private:
+    std::deque<LogMessage *> m_producerQueue;
+    std::deque<LogMessage *> m_consumerQueue;
+    std::mutex               m_producerLock;
+    std::mutex               m_consumerLock;
+    std::condition_variable  m_consumerCond;
+};
 
-    } // namespace log
+} // namespace log
 } // namespace kgr

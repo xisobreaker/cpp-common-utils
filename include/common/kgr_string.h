@@ -33,6 +33,7 @@ namespace kgr {
         oss << std::setbase(10) << number;
         std::string strNum = oss.str();
 
+        // 小数部分处理
         if (strNum.find('.') != std::string::npos) {
             std::string::reverse_iterator rit = strNum.rbegin();
             while (rit != strNum.rend()) {
@@ -71,27 +72,26 @@ namespace kgr {
     int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
 
     /**
-     * safe vsnprintf
-     * @param dest
-     * @param size bufsize
+     * 字符串格式化
      * @param fmt 字符串格式化
      */
-    int vsnprintf_safe(char *dest, int size, const char *fmt, ...);
+    std::string str_format(const char *fmt, ...);
 
     /**
      * 字符串分割
      * @param msg 原始字符串
-     * @param separator
+     * @param separator 分隔符
      */
-    std::vector<std::string> string_split(const std::string &msg, std::string separator);
+    std::vector<std::string> str_split(const std::string &msg, std::string separator);
 
     /**
-     * 去除左右两端字符
+     * @brief 修剪左右两端字符
+     *
      * @param msg 原始字符串
      * @param ch 要修剪的字符
-     * @return 修剪后的字符串
+     * @return std::string 修剪后的字符串
      */
-    std::string string_trim(const std::string &msg, const char ch);
+    std::string str_trim(const std::string &msg, const char ch);
 
     /**
      * 字符串替换
@@ -99,7 +99,7 @@ namespace kgr {
      * @param string src 替换前的字符
      * @param string dst 替换后的字符
      */
-    std::string string_replace(const std::string &msg, std::string src, std::string dst);
+    std::string str_replace(const std::string &msg, std::string src, std::string dst);
 
     /**
      * string 起始字符串判断
@@ -107,7 +107,7 @@ namespace kgr {
      * @param start 起始字符串
      * @return true/false
      */
-    bool string_startswith(const std::string &str, std::string start);
+    bool str_startswith(const std::string &str, std::string start);
 
     /**
      * string 结束字符串判断
@@ -115,5 +115,5 @@ namespace kgr {
      * @param end 结束字符串
      * @return true/false
      */
-    bool string_endswith(const std::string &str, std::string end);
+    bool str_endswith(const std::string &str, std::string end);
 } // namespace kgr

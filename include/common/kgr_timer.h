@@ -18,7 +18,10 @@ namespace kgr {
     constexpr bool dependent_false = false;
 
     /**
-     * 获取当前系统时间戳
+     * @brief 获取当前系统时间戳
+     *
+     * @tparam T
+     * @return uint64_t
      */
     template <typename T>
     inline uint64_t get_current_timestamp()
@@ -49,7 +52,11 @@ namespace kgr {
     }
 
     /**
-     * 时间戳时间转 timepoint
+     * @brief 时间戳时间转 timepoint
+     *
+     * @tparam T
+     * @param timestamp
+     * @return std::chrono::system_clock::time_point
      */
     template <typename T>
     inline std::chrono::system_clock::time_point timestamp_to_timepoint(T timestamp)
@@ -86,7 +93,7 @@ namespace kgr {
      * 获取当前格式化后的时间戳
      * @return YYYY-MM-DD HH:mm:ss.SSSSSS
      */
-    std::string get_format_datetime(std::chrono::system_clock::time_point tp);
+    std::string timepoint_format(std::chrono::system_clock::time_point tp);
 
     /**
      * 获取当前格式化后的时间戳
@@ -102,9 +109,11 @@ namespace kgr {
     uint64_t datetime_to_timestamp(std::string datetime);
 
     /**
-     * 计算 lambda 表达式耗时
+     * @brief 计算表达式耗时
+     *
+     * @tparam F
      * @param func lambda 表达式
-     * @return double 类型, 毫秒耗时
+     * @return double 毫秒耗时
      */
     template <typename F>
     double method_elapsed_time(F const &func)

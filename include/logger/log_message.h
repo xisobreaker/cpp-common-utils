@@ -13,23 +13,23 @@
 #include <cstdint>
 
 namespace kgr {
-    namespace log {
-        class LogMessage
-        {
-        public:
-            LogMessage();
-            virtual ~LogMessage();
+namespace log {
+class LogMessage
+{
+public:
+    LogMessage();
+    virtual ~LogMessage();
 
-        public:
-            char *getMessage();
-            int   setMessage(int level, const char *format, va_list &args);
-            int   length();
-            int   level();
+public:
+    char *getMessage();
+    int   setMessage(int level, const char *format, va_list &args);
+    int   length();
+    int   level();
 
-        private:
-            int   m_level;
-            char *m_buffer;
-            int   m_length;
-        };
-    } // namespace log
+private:
+    int   m_level;
+    char *m_buffer;
+    int   m_length;
+};
+} // namespace log
 } // namespace kgr

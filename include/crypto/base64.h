@@ -11,27 +11,27 @@
 #define _BASE64_H_H_H
 
 namespace kgr {
-    namespace crypto {
+namespace crypto {
 
-        /**
-         * base64编码
-         * @param srcBuf 需要进行 base64 编码的原始数据
-         * @param srcLen 原始数据长度
-         * @param dstBuf 编码完成后的数据
-         * @param dstMaxLen dstBuf缓存最大长度
-         */
-        int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
+/**
+ * base64编码
+ * @param srcBuf 需要进行 base64 编码的原始数据
+ * @param srcLen 原始数据长度
+ * @param dstBuf 编码完成后的数据
+ * @param dstMaxLen dstBuf缓存最大长度
+ */
+int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 
-        /**
-         * base64解码
-         * @param srcBuf 需要进行 base64 解码的原始数据
-         * @param srcLen 原始数据长度
-         * @param dstBuf 解码完成后的数据
-         * @param dstMaxLen dstBuf缓存最大长度
-         */
-        int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
+/**
+ * base64解码
+ * @param srcBuf 需要进行 base64 解码的原始数据
+ * @param srcLen 原始数据长度
+ * @param dstBuf 解码完成后的数据
+ * @param dstMaxLen dstBuf缓存最大长度
+ */
+int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 
-    } // namespace crypto
+} // namespace crypto
 } // namespace kgr
 
 #endif

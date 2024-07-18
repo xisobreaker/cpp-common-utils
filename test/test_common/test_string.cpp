@@ -1,18 +1,12 @@
-#include "test.h"
+#include "test_string.h"
 
 #include "kgr_assert.h"
 #include "kgr_string.h"
-#include "kgr_timer.h"
-#include "properties.h"
-
-#include <chrono>
-#include <cstdint>
-#include <iostream>
 
 void test_string_split()
 {
     std::string message = ";RTP/AVP;multicast;;ttl=127;";
-    auto        vecStrs = kgr::string_split(message, ";");
+    auto        vecStrs = kgr::str_split(message, ";");
 
     kgr_assert_strequal(vecStrs[0].c_str(), "RTP/AVP");
     kgr_assert_strequal(vecStrs[1].c_str(), "multicast");
@@ -36,18 +30,16 @@ void test_hex_string()
     kgr_assert_strequal(str.c_str(), packet.c_str());
 }
 
-void test_timer()
+void test_string_format()
 {
-    std::chrono::seconds      sec(1717861911);
-    std::chrono::milliseconds msec(1717861911100);
-    std::chrono::microseconds usec(1717861911100664);
+    std::string world = "World";
+    std::string msg   = kgr::str_format("Hello, %s", world.c_str());
+    kgr_assert_strequal("Hello, World", msg.c_str());
+}
 
-    std::string datetime = "";
-
-    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(sec));
-    kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.000000");
-    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(msec));
-    kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100000");
-    datetime = kgr::get_format_datetime(kgr::timestamp_to_timepoint(usec));
-    kgr_assert_strequal(datetime.c_str(), "2024-06-08 23:51:51.100664");
+void test_string_all()
+{
+    test_string_split();
+    test_hex_string();
+    test_string_format();
 }

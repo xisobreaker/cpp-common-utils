@@ -54,15 +54,15 @@
 #endif
 
 namespace kgr {
-    namespace log {
+namespace log {
 
-        /**
-         * 初始化全局 logManager
-         * @param filename 文件名称
-         * @param keepDays 日志留存时间
-         * @return true/false
-         */
-        bool init_log_manager(std::string filename, int keepDays = 30, int level = 1);
+/**
+ * 初始化全局 logManager
+ * @param filename 文件名称
+ * @param keepDays 日志留存时间
+ * @return true/false
+ */
+bool init_log_manager(std::string filename, int keepDays = 30, int level = 1);
 
-    } // namespace log
+} // namespace log
 } // namespace kgr

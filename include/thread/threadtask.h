@@ -10,54 +10,57 @@
 #pragma once
 
 #include <functional>
+
 namespace kgr {
-    namespace thread {
-        class IThreadTask
-        {
-        public:
-            IThreadTask()          = default;
-            virtual ~IThreadTask() = default;
+namespace thread {
 
-        public:
-            virtual void runTask() = 0;
-        };
+class IThreadTask
+{
+public:
+    IThreadTask()          = default;
+    virtual ~IThreadTask() = default;
 
-        template <typename T>
-        class ThreadTask : public IThreadTask
-        {
-            typedef std::function<void(T)>   TaskCallback;
-            typedef std::function<void(T &)> ReleaseCallback;
+public:
+    virtual void runTask() = 0;
+};
 
-        public:
-            ThreadTask(TaskCallback callback, T arg)
-            {
-                m_callback    = callback;
-                m_callbackArg = arg;
-            }
+template <typename T>
+class ThreadTask : public IThreadTask
+{
+    typedef std::function<void(T)>   TaskCallback;
+    typedef std::function<void(T &)> ReleaseCallback;
 
-            ThreadTask(TaskCallback callback, T arg, ReleaseCallback release)
-            {
-                ThreadTask(callback, arg);
-                m_release = release;
-            }
+public:
+    ThreadTask(TaskCallback callback, T arg)
+    {
+        m_callback    = callback;
+        m_callbackArg = arg;
+    }
 
-            virtual ~ThreadTask()
-            {
-                if (m_release)
-                    m_release(m_callbackArg);
-            }
+    ThreadTask(TaskCallback callback, T arg, ReleaseCallback release)
+    {
+        ThreadTask(callback, arg);
+        m_release = release;
+    }
 
-        public:
-            void runTask() override
-            {
-                if (m_callback)
-                    m_callback(m_callbackArg);
-            }
+    virtual ~ThreadTask()
+    {
+        if (m_release)
+            m_release(m_callbackArg);
+    }
 
-        private:
-            TaskCallback    m_callback;
-            T               m_callbackArg;
-            ReleaseCallback m_release;
-        };
-    } // namespace thread
+public:
+    void runTask() override
+    {
+        if (m_callback)
+            m_callback(m_callbackArg);
+    }
+
+private:
+    TaskCallback    m_callback;
+    T               m_callbackArg;
+    ReleaseCallback m_release;
+};
+
+} // namespace thread
 } // namespace kgr

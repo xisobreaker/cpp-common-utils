@@ -20,69 +20,69 @@
 #endif
 
 namespace kgr {
-    namespace filesystem {
-        class DirectoryIterator;
-        class DirectoryContainer
-        {
-            friend class DirectoryIterator;
+namespace filesystem {
+class DirectoryIterator;
+class DirectoryContainer
+{
+    friend class DirectoryIterator;
 
-        public:
-            DirectoryContainer(const char *directory);
-            ~DirectoryContainer();
+public:
+    DirectoryContainer(const char *directory);
+    ~DirectoryContainer();
 
-        public:
-            std::string       filepath();
-            DirectoryIterator iterator();
+public:
+    std::string       filepath();
+    DirectoryIterator iterator();
 
-        private:
-            std::string m_directory;
-        };
+private:
+    std::string m_directory;
+};
 
-        class DirectoryEntry
-        {
-        public:
+class DirectoryEntry
+{
+public:
 #if defined(KGR_PLATFORM_LINUX)
-            DirectoryEntry(dirent *entry);
+    DirectoryEntry(dirent *entry);
 #elif defined(KGR_PLATFORM_WINDOWS)
-            DirectoryEntry(WIN32_FIND_DATA entry);
+    DirectoryEntry(WIN32_FIND_DATA entry);
 #endif
-            ~DirectoryEntry();
+    ~DirectoryEntry();
 
-        public:
-            bool        is_directory();
-            std::string file_name();
+public:
+    bool        is_directory();
+    std::string file_name();
 
-        private:
+private:
 #if defined(KGR_PLATFORM_LINUX)
-            struct dirent *m_entry;
+    struct dirent *m_entry;
 #elif defined(KGR_PLATFORM_WINDOWS)
-            WIN32_FIND_DATA m_entry;
+    WIN32_FIND_DATA m_entry;
 #endif
-        };
+};
 
-        class DirectoryIterator
-        {
-        public:
-            DirectoryIterator(DirectoryContainer *container);
-            ~DirectoryIterator();
+class DirectoryIterator
+{
+public:
+    DirectoryIterator(DirectoryContainer *container);
+    ~DirectoryIterator();
 
-        public:
-            void start();
-            void toNext();
-            bool isDone();
+public:
+    void start();
+    void toNext();
+    bool isDone();
 
-            DirectoryEntry current();
+    DirectoryEntry current();
 
-        private:
+private:
 #if defined(KGR_PLATFORM_LINUX)
-            DIR           *m_dirHandler;
-            struct dirent *m_entry;
+    DIR           *m_dirHandler;
+    struct dirent *m_entry;
 #elif defined(KGR_PLATFORM_WINDOWS)
-            HANDLE          m_dirHandler;
-            WIN32_FIND_DATA m_entry;
-            bool            m_successful;
+    HANDLE          m_dirHandler;
+    WIN32_FIND_DATA m_entry;
+    bool            m_successful;
 #endif
-            DirectoryContainer *m_container;
-        };
-    } // namespace filesystem
+    DirectoryContainer *m_container;
+};
+} // namespace filesystem
 } // namespace kgr

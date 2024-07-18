@@ -91,348 +91,348 @@ static const int IPEND_TABLE[64] = {40, 8,  48, 16, 56, 24, 64, 32, 39, 7,  47, 
                                     51, 19, 59, 27, 34, 2,  42, 10, 50, 18, 58, 26, 33, 1,  41, 9,  49, 17, 57, 25};
 
 namespace kgr {
-    namespace crypto {
+namespace crypto {
 
-        DesCrypto::DesCrypto()
-        {
+DesCrypto::DesCrypto()
+{
+}
+
+DesCrypto::~DesCrypto()
+{
+}
+
+void DesCrypto::byteToBinary(char ch, bool binary[8])
+{
+    for (int i = 0; i < 8; i++) {
+        binary[i] = (ch >> (7 - i)) & 0x01;
+    }
+}
+
+void DesCrypto::keyLeftShift(bool key56[56], unsigned int round)
+{
+    bool L28[28] = {0};
+    bool R28[28] = {0};
+    for (int i = 0; i < 28; i++) {
+        L28[i] = key56[i];
+        R28[i] = key56[i + 28];
+    }
+
+    for (int i = 0; i < 28; i++) {
+        if ((i + KEY_SHIFT[round]) < 28) {
+            key56[i]      = L28[i + KEY_SHIFT[round]];
+            key56[i + 28] = R28[i + KEY_SHIFT[round]];
+        } else {
+            key56[i]      = L28[i + KEY_SHIFT[round] - 28];
+            key56[i + 28] = R28[i + KEY_SHIFT[round] - 28];
         }
+    }
+}
 
-        DesCrypto::~DesCrypto()
-        {
+void DesCrypto::f_function(bool r32[32], bool subKey[48], bool out32[32])
+{
+    bool expandR[48] = {0};
+    for (int i = 0; i < 48; i++) {
+        expandR[i] = r32[EXTEND_TABLE[i] - 1];
+        expandR[i] = expandR[i] ^ subKey[i];
+    }
+    bool t32[32] = {0};
+    for (int i = 0; i < 8; i++) {
+        int row        = expandR[i * 6 + 0] * 2 + expandR[i * 6 + 5];
+        int col        = expandR[i * 6 + 4] + expandR[i * 6 + 3] * 2 + expandR[i * 6 + 2] * 4 + expandR[i * 6 + 1] * 8;
+        int num        = S_BOX_TABLE[i][row][col];
+        t32[i * 4 + 0] = num & 0x08 ? true : false;
+        t32[i * 4 + 1] = num & 0x04 ? true : false;
+        t32[i * 4 + 2] = num & 0x02 ? true : false;
+        t32[i * 4 + 3] = num & 0x01 ? true : false;
+    }
+
+    for (int i = 0; i < 32; i++) {
+        out32[i] = t32[P_TABLE[i] - 1];
+    }
+}
+
+void DesCrypto::desEncode64(SecretKey *secretKey, const char *pBuf, char *pDst, int keyN)
+{
+    bool dec64[64] = {0};
+    bool tmp64[64] = {0};
+    for (int i = 0; i < 8; i++) {
+        byteToBinary(pBuf[i], dec64 + i * 8);
+    }
+    for (int i = 0; i < 64; i++) {
+        tmp64[i] = dec64[63 - i];
+    }
+    bool T64[64] = {0};
+    for (int i = 0; i < 64; i++) {
+        T64[i] = tmp64[64 - IP_TABLE[i]];
+    }
+    bool L32[32] = {0};
+    bool R32[32] = {0};
+    for (int i = 0; i < 32; i++) {
+        L32[i] = T64[i];
+        R32[i] = T64[i + 32];
+    }
+    for (int i = 0; i < 16; i++) {
+        bool T32[32] = {0};
+        f_function(R32, secretKey->subKey[keyN][i], T32);
+        for (int j = 0; j < 32; j++) {
+            T32[j] = L32[j] ^ T32[j];
+            L32[j] = R32[j];
+            R32[j] = T32[j];
         }
-
-        void DesCrypto::byteToBinary(char ch, bool binary[8])
-        {
-            for (int i = 0; i < 8; i++) {
-                binary[i] = (ch >> (7 - i)) & 0x01;
-            }
-        }
-
-        void DesCrypto::keyLeftShift(bool key56[56], unsigned int round)
-        {
-            bool L28[28] = {0};
-            bool R28[28] = {0};
-            for (int i = 0; i < 28; i++) {
-                L28[i] = key56[i];
-                R28[i] = key56[i + 28];
-            }
-
-            for (int i = 0; i < 28; i++) {
-                if ((i + KEY_SHIFT[round]) < 28) {
-                    key56[i]      = L28[i + KEY_SHIFT[round]];
-                    key56[i + 28] = R28[i + KEY_SHIFT[round]];
-                } else {
-                    key56[i]      = L28[i + KEY_SHIFT[round] - 28];
-                    key56[i + 28] = R28[i + KEY_SHIFT[round] - 28];
-                }
-            }
-        }
-
-        void DesCrypto::f_function(bool r32[32], bool subKey[48], bool out32[32])
-        {
-            bool expandR[48] = {0};
-            for (int i = 0; i < 48; i++) {
-                expandR[i] = r32[EXTEND_TABLE[i] - 1];
-                expandR[i] = expandR[i] ^ subKey[i];
-            }
-            bool t32[32] = {0};
-            for (int i = 0; i < 8; i++) {
-                int row        = expandR[i * 6 + 0] * 2 + expandR[i * 6 + 5];
-                int col        = expandR[i * 6 + 4] + expandR[i * 6 + 3] * 2 + expandR[i * 6 + 2] * 4 + expandR[i * 6 + 1] * 8;
-                int num        = S_BOX_TABLE[i][row][col];
-                t32[i * 4 + 0] = num & 0x08 ? true : false;
-                t32[i * 4 + 1] = num & 0x04 ? true : false;
-                t32[i * 4 + 2] = num & 0x02 ? true : false;
-                t32[i * 4 + 3] = num & 0x01 ? true : false;
-            }
-
-            for (int i = 0; i < 32; i++) {
-                out32[i] = t32[P_TABLE[i] - 1];
-            }
-        }
-
-        void DesCrypto::desEncode64(SecretKey *secretKey, const char *pBuf, char *pDst, int keyN)
-        {
-            bool dec64[64] = {0};
-            bool tmp64[64] = {0};
-            for (int i = 0; i < 8; i++) {
-                byteToBinary(pBuf[i], dec64 + i * 8);
-            }
-            for (int i = 0; i < 64; i++) {
-                tmp64[i] = dec64[63 - i];
-            }
-            bool T64[64] = {0};
-            for (int i = 0; i < 64; i++) {
-                T64[i] = tmp64[64 - IP_TABLE[i]];
-            }
-            bool L32[32] = {0};
-            bool R32[32] = {0};
-            for (int i = 0; i < 32; i++) {
-                L32[i] = T64[i];
-                R32[i] = T64[i + 32];
-            }
-            for (int i = 0; i < 16; i++) {
-                bool T32[32] = {0};
-                f_function(R32, secretKey->subKey[keyN][i], T32);
-                for (int j = 0; j < 32; j++) {
-                    T32[j] = L32[j] ^ T32[j];
-                    L32[j] = R32[j];
-                    R32[j] = T32[j];
-                }
-            }
-            for (int i = 0; i < 32; i++) {
-                T64[i]      = R32[i];
-                T64[i + 32] = L32[i];
-            }
-            bool bit64[64] = {0};
-            for (int i = 0; i < 64; i++) {
-                bit64[i] = T64[IPEND_TABLE[i] - 1];
-            }
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (bit64[i * 8 + j]) {
-                        pDst[i] |= ((int)pow(2, (7 - j)) & 0xFF);
-                    }
-                }
+    }
+    for (int i = 0; i < 32; i++) {
+        T64[i]      = R32[i];
+        T64[i + 32] = L32[i];
+    }
+    bool bit64[64] = {0};
+    for (int i = 0; i < 64; i++) {
+        bit64[i] = T64[IPEND_TABLE[i] - 1];
+    }
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (bit64[i * 8 + j]) {
+                pDst[i] |= ((int)pow(2, (7 - j)) & 0xFF);
             }
         }
+    }
+}
 
-        void DesCrypto::desDecode64(SecretKey *secretKey, const char *pBuf, char *pDst, int keyN)
-        {
-            bool dec64[64] = {0};
-            bool tmp64[64] = {0};
-            for (int i = 0; i < 8; i++) {
-                byteToBinary(pBuf[i], dec64 + i * 8);
-            }
-            for (int i = 0; i < 64; i++) {
-                tmp64[i] = dec64[63 - i];
-            }
-            bool T64[64] = {0};
-            for (int i = 0; i < 64; i++) {
-                T64[i] = tmp64[64 - IP_TABLE[i]];
-            }
-            bool L32[32] = {0};
-            bool R32[32] = {0};
-            for (int i = 0; i < 32; i++) {
-                L32[i] = T64[i + 32];
-                R32[i] = T64[i];
-            }
-            for (int i = 0; i < 16; i++) {
-                bool T32[32] = {0};
-                f_function(L32, secretKey->subKey[keyN][15 - i], T32);
-                for (int j = 0; j < 32; j++) {
-                    T32[j] = R32[j] ^ T32[j];
-                    R32[j] = L32[j];
-                    L32[j] = T32[j];
-                }
-            }
-            for (int i = 0; i < 32; i++) {
-                T64[i]      = L32[i];
-                T64[i + 32] = R32[i];
-            }
-            bool bit64[64] = {0};
-            for (int i = 0; i < 64; i++) {
-                bit64[i] = T64[IPEND_TABLE[i] - 1];
-            }
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (bit64[i * 8 + j]) {
-                        pDst[i] |= ((int)pow(2, (7 - j)) & 0xFF);
-                    }
-                }
+void DesCrypto::desDecode64(SecretKey *secretKey, const char *pBuf, char *pDst, int keyN)
+{
+    bool dec64[64] = {0};
+    bool tmp64[64] = {0};
+    for (int i = 0; i < 8; i++) {
+        byteToBinary(pBuf[i], dec64 + i * 8);
+    }
+    for (int i = 0; i < 64; i++) {
+        tmp64[i] = dec64[63 - i];
+    }
+    bool T64[64] = {0};
+    for (int i = 0; i < 64; i++) {
+        T64[i] = tmp64[64 - IP_TABLE[i]];
+    }
+    bool L32[32] = {0};
+    bool R32[32] = {0};
+    for (int i = 0; i < 32; i++) {
+        L32[i] = T64[i + 32];
+        R32[i] = T64[i];
+    }
+    for (int i = 0; i < 16; i++) {
+        bool T32[32] = {0};
+        f_function(L32, secretKey->subKey[keyN][15 - i], T32);
+        for (int j = 0; j < 32; j++) {
+            T32[j] = R32[j] ^ T32[j];
+            R32[j] = L32[j];
+            L32[j] = T32[j];
+        }
+    }
+    for (int i = 0; i < 32; i++) {
+        T64[i]      = L32[i];
+        T64[i + 32] = R32[i];
+    }
+    bool bit64[64] = {0};
+    for (int i = 0; i < 64; i++) {
+        bit64[i] = T64[IPEND_TABLE[i] - 1];
+    }
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (bit64[i * 8 + j]) {
+                pDst[i] |= ((int)pow(2, (7 - j)) & 0xFF);
             }
         }
+    }
+}
 
-        unsigned int DesCrypto::desEncode(SecretKey *secretKey, const char *pBuf, unsigned int nLen, char *pDst, int keyN)
-        {
-            int nIndex = 0;
-            int srcLen = nLen;
-            int dstLen = 0;
-            memset(pDst, 0, nLen);
+unsigned int DesCrypto::desEncode(SecretKey *secretKey, const char *pBuf, unsigned int nLen, char *pDst, int keyN)
+{
+    int nIndex = 0;
+    int srcLen = nLen;
+    int dstLen = 0;
+    memset(pDst, 0, nLen);
 
-            do {
-                desEncode64(secretKey, pBuf + nIndex, pDst + dstLen, keyN);
-                nIndex += 8;
-                srcLen -= 8;
-                dstLen += 8;
-            } while (srcLen > 0);
-            return dstLen;
+    do {
+        desEncode64(secretKey, pBuf + nIndex, pDst + dstLen, keyN);
+        nIndex += 8;
+        srcLen -= 8;
+        dstLen += 8;
+    } while (srcLen > 0);
+    return dstLen;
+}
+
+unsigned int DesCrypto::desDecode(SecretKey *secretKey, const char *pBuf, unsigned int nLen, char *pDst, int keyN)
+{
+    int nIndex = 0;
+    int srcLen = nLen;
+    int dstLen = 0;
+    memset(pDst, 0, nLen);
+
+    do {
+        desDecode64(secretKey, pBuf + nIndex, pDst + dstLen, keyN);
+        nIndex += 8;
+        srcLen -= 8;
+        dstLen += 8;
+    } while (srcLen > 0);
+    return dstLen;
+}
+
+void DesCrypto::createSubKey(SecretKey *secretKey, char *pKey, int keyN)
+{
+    bool dec64[64] = {0};
+    bool key64[64] = {0};
+    bool key56[56] = {0};
+    for (int i = 0; i < 8; i++) {
+        byteToBinary(pKey[i], dec64 + i * 8);
+    }
+    for (int i = 0; i < 64; i++) {
+        key64[i] = dec64[63 - i];
+    }
+    for (int i = 0; i < 56; i++) {
+        key56[i] = key64[64 - KEY_TABLE[i]];
+    }
+    for (int i = 0; i < 16; i++) {
+        keyLeftShift(key56, i);
+        for (int j = 0; j < 48; j++) {
+            secretKey->subKey[keyN][i][j] = key56[COMPRESS_TABLE[j] - 1];
         }
+    }
+}
 
-        unsigned int DesCrypto::desDecode(SecretKey *secretKey, const char *pBuf, unsigned int nLen, char *pDst, int keyN)
-        {
-            int nIndex = 0;
-            int srcLen = nLen;
-            int dstLen = 0;
-            memset(pDst, 0, nLen);
-
-            do {
-                desDecode64(secretKey, pBuf + nIndex, pDst + dstLen, keyN);
-                nIndex += 8;
-                srcLen -= 8;
-                dstLen += 8;
-            } while (srcLen > 0);
-            return dstLen;
+void DesCrypto::initSecretKey(const char *pKey, int nLen, bool is3Des, PaddingType padType)
+{
+    m_paddingType      = padType;
+    m_secretKey.is3DES = is3Des;
+    char keyBuf[24]    = {0};
+    int  keyLen        = nLen >= 24 ? 24 : nLen;
+    memcpy(keyBuf, pKey, keyLen);
+    if (is3Des) {
+        for (int i = 0; i < 3; i++) {
+            createSubKey(&m_secretKey, keyBuf + i * 8, i);
         }
+    } else {
+        createSubKey(&m_secretKey, keyBuf, 0);
+    }
+}
 
-        void DesCrypto::createSubKey(SecretKey *secretKey, char *pKey, int keyN)
-        {
-            bool dec64[64] = {0};
-            bool key64[64] = {0};
-            bool key56[56] = {0};
-            for (int i = 0; i < 8; i++) {
-                byteToBinary(pKey[i], dec64 + i * 8);
-            }
-            for (int i = 0; i < 64; i++) {
-                key64[i] = dec64[63 - i];
-            }
-            for (int i = 0; i < 56; i++) {
-                key56[i] = key64[64 - KEY_TABLE[i]];
-            }
-            for (int i = 0; i < 16; i++) {
-                keyLeftShift(key56, i);
-                for (int j = 0; j < 48; j++) {
-                    secretKey->subKey[keyN][i][j] = key56[COMPRESS_TABLE[j] - 1];
-                }
-            }
-        }
+int DesCrypto::encrypt(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
+{
+    char *tmpBuf = NULL;
+    int   tmpLen = 0;
+    int   dstLen = 0;
 
-        void DesCrypto::initSecretKey(const char *pKey, int nLen, bool is3Des, PaddingType padType)
-        {
-            m_paddingType      = padType;
-            m_secretKey.is3DES = is3Des;
-            char keyBuf[24]    = {0};
-            int  keyLen        = nLen >= 24 ? 24 : nLen;
-            memcpy(keyBuf, pKey, keyLen);
-            if (is3Des) {
-                for (int i = 0; i < 3; i++) {
-                    createSubKey(&m_secretKey, keyBuf + i * 8, i);
-                }
+    memset(dstBuf, 0, dstMaxLen);
+    if (m_paddingType == ZeroPadding) {
+        tmpLen = srcLen % 8 == 0 ? srcLen + 8 : (srcLen / 8 + 1) * 8;
+        tmpBuf = (char *)malloc(tmpLen);
+        memset(tmpBuf, 0, tmpLen);
+        memcpy(tmpBuf, srcBuf, srcLen);
+    } else if (m_paddingType == Pkcs5Padding) {
+        return 0;
+    } else if (m_paddingType == Pkcs7Padding) {
+        return 0;
+    }
+
+    if (m_secretKey.is3DES) {
+        dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
+        tmpLen = desDecode(&m_secretKey, dstBuf, dstLen, tmpBuf, 1);
+        dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 2);
+    } else {
+        dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
+    }
+
+    if (tmpBuf != NULL) {
+        free(tmpBuf);
+        tmpBuf = NULL;
+    }
+    return dstLen;
+}
+
+int DesCrypto::decrypt(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
+{
+    if (srcLen % 8 != 0)
+        return -1;
+
+    char *tmpBuf = NULL;
+    int   tmpLen = 0;
+    int   dstLen = 0;
+
+    memset(dstBuf, 0, dstMaxLen);
+    tmpBuf = (char *)malloc(srcLen);
+    memset(tmpBuf, 0, srcLen);
+    memcpy(tmpBuf, srcBuf, srcLen);
+    tmpLen = srcLen;
+    if (m_secretKey.is3DES) {
+        dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 2);
+        tmpLen = desEncode(&m_secretKey, dstBuf, dstLen, tmpBuf, 1);
+        dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
+    } else {
+        dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
+    }
+
+    if (tmpBuf != NULL) {
+        free(tmpBuf);
+        tmpBuf = NULL;
+    }
+
+    if (m_paddingType == ZeroPadding) {
+        int offset = 0;
+        for (int i = 0; i < 8; i++) {
+            if (dstBuf[dstLen - 1 - i] == 0x00) {
+                offset += 1;
             } else {
-                createSubKey(&m_secretKey, keyBuf, 0);
+                break;
             }
         }
+        dstLen -= offset;
+    } else if (m_paddingType == Pkcs5Padding) {
+    } else if (m_paddingType == Pkcs7Padding) {
+    }
+    return dstLen;
+}
 
-        int DesCrypto::encrypt(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
-        {
-            char *tmpBuf = NULL;
-            int   tmpLen = 0;
-            int   dstLen = 0;
-
-            memset(dstBuf, 0, dstMaxLen);
-            if (m_paddingType == ZeroPadding) {
-                tmpLen = srcLen % 8 == 0 ? srcLen + 8 : (srcLen / 8 + 1) * 8;
-                tmpBuf = (char *)malloc(tmpLen);
-                memset(tmpBuf, 0, tmpLen);
-                memcpy(tmpBuf, srcBuf, srcLen);
-            } else if (m_paddingType == Pkcs5Padding) {
-                return 0;
-            } else if (m_paddingType == Pkcs7Padding) {
-                return 0;
-            }
-
-            if (m_secretKey.is3DES) {
-                dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
-                tmpLen = desDecode(&m_secretKey, dstBuf, dstLen, tmpBuf, 1);
-                dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 2);
-            } else {
-                dstLen = desEncode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
-            }
-
-            if (tmpBuf != NULL) {
-                free(tmpBuf);
-                tmpBuf = NULL;
-            }
-            return dstLen;
+std::string DesCrypto::encryptBase64(const char *pBuf, int nLen)
+{
+    std::string strMsg    = "";
+    char       *dstBuf    = NULL;
+    int         dstMaxLen = nLen + 9;
+    dstBuf                = (char *)malloc(dstMaxLen);
+    memset(dstBuf, 0, dstMaxLen);
+    int dstLen = encrypt(pBuf, nLen, dstBuf, dstMaxLen);
+    do {
+        if (dstLen == -1) {
+            break;
         }
-
-        int DesCrypto::decrypt(const char *srcBuf, int srcLen, char *dstBuf, int dstMaxLen)
-        {
-            if (srcLen % 8 != 0)
-                return -1;
-
-            char *tmpBuf = NULL;
-            int   tmpLen = 0;
-            int   dstLen = 0;
-
-            memset(dstBuf, 0, dstMaxLen);
-            tmpBuf = (char *)malloc(srcLen);
-            memset(tmpBuf, 0, srcLen);
-            memcpy(tmpBuf, srcBuf, srcLen);
-            tmpLen = srcLen;
-            if (m_secretKey.is3DES) {
-                dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 2);
-                tmpLen = desEncode(&m_secretKey, dstBuf, dstLen, tmpBuf, 1);
-                dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
-            } else {
-                dstLen = desDecode(&m_secretKey, tmpBuf, tmpLen, dstBuf, 0);
-            }
-
-            if (tmpBuf != NULL) {
-                free(tmpBuf);
-                tmpBuf = NULL;
-            }
-
-            if (m_paddingType == ZeroPadding) {
-                int offset = 0;
-                for (int i = 0; i < 8; i++) {
-                    if (dstBuf[dstLen - 1 - i] == 0x00) {
-                        offset += 1;
-                    } else {
-                        break;
-                    }
-                }
-                dstLen -= offset;
-            } else if (m_paddingType == Pkcs5Padding) {
-            } else if (m_paddingType == Pkcs7Padding) {
-            }
-            return dstLen;
+        char *tmpBuf = (char *)malloc(dstLen * 2);
+        memset(tmpBuf, 0, dstLen * 2);
+        if (base64_encode(tmpBuf, dstLen * 2, dstBuf, dstLen) != -1) {
+            strMsg = tmpBuf;
         }
-
-        std::string DesCrypto::encryptBase64(const char *pBuf, int nLen)
-        {
-            std::string strMsg    = "";
-            char       *dstBuf    = NULL;
-            int         dstMaxLen = nLen + 9;
-            dstBuf                = (char *)malloc(dstMaxLen);
-            memset(dstBuf, 0, dstMaxLen);
-            int dstLen = encrypt(pBuf, nLen, dstBuf, dstMaxLen);
-            do {
-                if (dstLen == -1) {
-                    break;
-                }
-                char *tmpBuf = (char *)malloc(dstLen * 2);
-                memset(tmpBuf, 0, dstLen * 2);
-                if (base64_encode(tmpBuf, dstLen * 2, dstBuf, dstLen) != -1) {
-                    strMsg = tmpBuf;
-                }
-                if (tmpBuf != NULL) {
-                    free(tmpBuf);
-                    tmpBuf = NULL;
-                }
-            } while (0);
-            return strMsg;
+        if (tmpBuf != NULL) {
+            free(tmpBuf);
+            tmpBuf = NULL;
         }
+    } while (0);
+    return strMsg;
+}
 
-        int DesCrypto::decryptBase64(std::string &strMsg, char *pBuf, int nMaxLen)
-        {
-            int   tmpMaxLen = strMsg.length();
-            char *tmpBuf    = (char *)malloc(tmpMaxLen);
-            int   tmpLen    = 0;
-            int   dstLen    = 0;
+int DesCrypto::decryptBase64(std::string &strMsg, char *pBuf, int nMaxLen)
+{
+    int   tmpMaxLen = strMsg.length();
+    char *tmpBuf    = (char *)malloc(tmpMaxLen);
+    int   tmpLen    = 0;
+    int   dstLen    = 0;
 
-            memset(tmpBuf, 0, tmpMaxLen);
-            tmpLen = base64_decode(tmpBuf, tmpMaxLen, strMsg.c_str(), strMsg.length());
-            if (tmpLen == -1) {
-                return -1;
-            }
-            dstLen = decrypt(tmpBuf, tmpLen, pBuf, nMaxLen);
-            if (tmpBuf != NULL) {
-                free(tmpBuf);
-                tmpBuf = NULL;
-            }
-            return dstLen;
-        }
+    memset(tmpBuf, 0, tmpMaxLen);
+    tmpLen = base64_decode(tmpBuf, tmpMaxLen, strMsg.c_str(), strMsg.length());
+    if (tmpLen == -1) {
+        return -1;
+    }
+    dstLen = decrypt(tmpBuf, tmpLen, pBuf, nMaxLen);
+    if (tmpBuf != NULL) {
+        free(tmpBuf);
+        tmpBuf = NULL;
+    }
+    return dstLen;
+}
 
-    } // namespace crypto
+} // namespace crypto
 } // namespace kgr

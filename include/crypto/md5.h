@@ -12,13 +12,13 @@
 
 #include <string>
 namespace kgr {
-    namespace crypto {
-        /**
-         * @param srcBuf 待加密数据
-         * @param srcLen 待加密数据长度
-         * @return 加密后的 hex 字符串
-         */
-        std::string md5_encrypt_hex(const unsigned char *srcBuf, int srcLen);
-    } // namespace crypto
+namespace crypto {
+/**
+ * @param srcBuf 待加密数据
+ * @param srcLen 待加密数据长度
+ * @return 加密后的 hex 字符串
+ */
+std::string md5_encrypt_hex(const unsigned char *srcBuf, int srcLen);
+} // namespace crypto
 } // namespace kgr
 #endif

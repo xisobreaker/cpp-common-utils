@@ -57,7 +57,8 @@ SortIncludes: true
 IncludeBlocks: Regroup
 # 宏定义缩进方式
 IndentPPDirectives: BeforeHash
-NamespaceIndentation: All
+# 命名空间缩进方式(All、None)
+NamespaceIndentation: None
 # case 缩进
 IndentCaseLabels: true
 # extern 缩进

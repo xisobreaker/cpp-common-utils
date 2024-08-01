@@ -96,7 +96,7 @@ std::vector<std::string> str_split(const std::string &msg, std::string separator
  * @param ...
  * @return char*
  */
-char *str_split_values(const char *str, char sep, const char *fmt, ...);
+char *str_split_values(char *str, char sep, const char *fmt, ...);
 
 /**
  * @brief 修剪左右两端字符

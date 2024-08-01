@@ -46,16 +46,15 @@ void test_str_split_values()
     char         *addrtype;
     char         *addr;
 
-    char message[] = "- 2256453820 2256453820 IN IP4 0.0.0.0";
+    char message[] = "- 2256153820 2256453820 IN IP4 0.0.0.0";
 
     char *str = kgr::str_split_values(message, ' ', "sllsss", &username, &sess_id, &sess_version, &nettype, &addrtype, &addr);
-    printf("str         : %s\n", str);
-    printf("username    : %s\n", username);
-    printf("sess_id     : %lld\n", sess_id);
-    printf("sess_version: %lld\n", sess_version);
-    printf("nettype     : %s\n", nettype);
-    printf("addrtype    : %s\n", addrtype);
-    printf("addr        : %s\n", addr);
+    kgr_assert_strequal(username, "-");
+    kgr_assert_equal(sess_id, 2256153820);
+    kgr_assert_equal(sess_version, 2256453820);
+    kgr_assert_strequal(nettype, "IN");
+    kgr_assert_strequal(addrtype, "IP4");
+    kgr_assert_strequal(addr, "0.0.0.0");
 }
 
 void test_string_all()

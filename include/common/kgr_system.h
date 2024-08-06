@@ -11,12 +11,25 @@
 
 #include "config/platform.h"
 
+#include <string>
+
 #if defined(KGR_PLATFORM_LINUX)
 
 /**
- * UNIX 信号处理
+ * @brief UNIX 信号处理
+ *
  * @param signo 系统信号
  * @param handler 信号处理回调
  */
 void sig_process(int signo, void (*handler)(int));
+
+/**
+ * @brief 执行shell命令
+ *
+ * @param result
+ * @param command
+ * @return true
+ * @return false
+ */
+bool execute_shell_command(std::string &result, const std::string &command);
 #endif

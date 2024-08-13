@@ -11,8 +11,10 @@
 #define _DES_ENCRYPT_H_H_H
 
 #include <string>
+
 namespace kgr {
 namespace crypto {
+
 enum PaddingType {
     ZeroPadding  = 0,
     Pkcs5Padding = 1,
@@ -53,6 +55,7 @@ private:
     SecretKey   m_secretKey;
     PaddingType m_paddingType;
 };
+
 } // namespace crypto
 } // namespace kgr
 

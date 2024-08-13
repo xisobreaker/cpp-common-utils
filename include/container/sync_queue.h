@@ -9,9 +9,12 @@
 
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <deque>
+#include <iostream>
 #include <mutex>
+#include <type_traits>
 
 namespace kgr {
 namespace container {
@@ -20,105 +23,138 @@ namespace container {
  * 线程安全的同步队列
  */
 template <typename T>
-class SynchronizedQueue
+class SyncQueue
 {
     typedef std::deque<T> self_type;
 
 public:
-    SynchronizedQueue(){};
-    virtual ~SynchronizedQueue(){};
+    SyncQueue() : m_shutdown(false){};
+    virtual ~SyncQueue(){};
 
 public:
     /**
-     * 放入队列
+     * @brief 放入队列
+     *
      * @param data 入队列数据
      */
     void push_back(const T &data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
         m_queue.push_back(data);
-        m_cond.notify_one();
+        m_condition.notify_one();
     }
 
     /**
-     * 出队列, 阻塞读取
-     * @param result 数据
-     * @return 读取结果
+     * @brief
+     *
+     * @param data
      */
-    bool pop_front(T &result)
+    void push_back(const T &&data)
     {
-        return pop_front(result, -1);
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_queue.push_back(std::move(data));
+        m_condition.notify_one();
     }
 
     /**
-     * 出队列
-     * @param result 数据
-     * @param waitMs 等待毫秒数(-1为阻塞)
-     * @return 读取结果
+     * @brief 出队列, 阻塞读取
+     *
+     * @param data
+     * @return true
+     * @return false
      */
-    bool pop_front(T &result, int waitMs)
+    bool pop_front(T &data)
     {
-        std::unique_lock<std::mutex> lock(m_mutex);
-        if (m_queue.empty()) {
-            if (waitMs > 0) {
-                m_cond.wait_for(lock, std::chrono::milliseconds(waitMs));
-            } else if (waitMs == 0) {
-                return false;
-            } else {
-                m_cond.wait(lock);
+        if (!m_queue.empty() && !m_shutdown) {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            if (!m_queue.empty() && !m_shutdown) {
+                data = m_queue.front();
+                m_queue.pop_front();
+                return true;
             }
         }
-
-        if (m_queue.empty()) {
-            return false;
-        }
-        result = m_queue.front();
-        m_queue.pop_front();
-        return true;
+        return false;
     }
 
     /**
-     * 清空队列
+     * @brief 出队列
+     *
+     * @param result
+     * @param waitMs
+     * @return true
+     * @return false
      */
-    void clear()
+    void wait_pop_front(T &data)
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        while (m_queue.empty() && !m_shutdown) {
+            m_condition.wait(lock);
+        }
+
+        if (m_queue.empty() || m_shutdown) {
+            return;
+        }
+
+        data = m_queue.front();
+        m_queue.pop_front();
+    }
+
+    /**
+     * @brief 所有出队操作退出阻塞状态
+     *
+     */
+    void shutdown()
     {
         std::lock_guard<std::mutex> lock(m_mutex);
         while (!m_queue.empty()) {
+            T &data = m_queue.front();
+            delete_queue_object(data);
             m_queue.pop_front();
         }
+        m_shutdown = true;
+        m_condition.notify_all();
     }
 
     /**
-     * 所有出队操作退出阻塞状态
-     */
-    void loopbreak()
-    {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        m_cond.notify_all();
-    }
-
-    /**
-     * 获取队列大小
-     * @return 队列大小
+     * @brief 获取队列大小
+     *
+     * @return unsigned int
      */
     unsigned int size() const
     {
+        std::lock_guard<std::mutex> lock(m_mutex);
         return static_cast<unsigned int>(m_queue.size());
     }
 
     /**
-     * 队列是否为空
-     * @return true/false
+     * @brief 队列是否为空
+     *
+     * @return true
+     * @return false
      */
     bool empty() const
     {
+        std::lock_guard<std::mutex> lock(m_mutex);
         return m_queue.empty();
     }
 
 private:
+    template <typename E = T>
+    typename std::enable_if<std::is_pointer<E>::value>::type delete_queue_object(T &obj)
+    {
+        delete obj;
+    }
+
+    template <typename E = T>
+    typename std::enable_if<!std::is_pointer<E>::value>::type delete_queue_object(const E &)
+    {
+    }
+
+private:
+    std::atomic<bool>       m_shutdown;
     std::deque<T>           m_queue;
     mutable std::mutex      m_mutex;
-    std::condition_variable m_cond;
+    std::condition_variable m_condition;
 };
 } // namespace container
 } // namespace kgr

@@ -11,15 +11,13 @@
 #define _PROPERTY_H_H_H
 
 #include <cstdint>
-#include <iostream>
 #include <string>
-#include <type_traits>
 #include <unordered_map>
 #include <utility>
-#include <vector>
 
 namespace kgr {
 namespace config {
+
 class PropertyValue
 {
 public:

@@ -13,6 +13,7 @@
 #include <vector>
 
 namespace kgr {
+  
 
 /**
  * @brief Get the network names object

@@ -39,7 +39,7 @@ void ThreadPool::stop()
 
     m_runFlags = false;
     for (int i = 0; i < m_threadNum; i++) {
-        m_taskQueue.loopbreak();
+        m_taskQueue.shutdown();
         if (m_threads[i].joinable()) {
             m_threads[i].join();
         }

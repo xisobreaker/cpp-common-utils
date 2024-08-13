@@ -1,8 +1,5 @@
 #include "kgr_timer.h"
 
-#include "config/platform.h"
-#include "kgr_string.h"
-
 #include <chrono>
 #include <iomanip>
 
@@ -34,7 +31,7 @@ std::string get_current_format_datetime()
     return timepoint_format(tp);
 }
 
-uint64_t string_format_time(std::string format, const std::string &datetime)
+uint64_t string_format_time(const std::string &format, const std::string &datetime)
 {
     auto conv_ch = [](char c) {
         return c - '0';

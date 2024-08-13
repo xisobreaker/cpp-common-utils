@@ -1,13 +1,5 @@
 #include "kgr_hardware.h"
 
-#include "config/platform.h"
-
-#include <sstream>
-
-#if defined(KGR_PLATFORM_LINUX)
-    #include "kgr_system.h"
-#endif
-
 #include <dirent.h>
 #include <fstream>
 #include <ifaddrs.h>

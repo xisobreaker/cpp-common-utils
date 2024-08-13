@@ -59,5 +59,6 @@ private:
 public:
     friend LogInstance<LogManager>;
 };
+
 } // namespace log
 } // namespace kgr

@@ -32,4 +32,5 @@ void sig_process(int signo, void (*handler)(int));
  * @return false
  */
 bool execute_shell_command(std::string &result, const std::string &command);
+
 #endif

@@ -12,8 +12,8 @@
 #include "log_message.h"
 
 #include <condition_variable>
+#include <deque>
 #include <mutex>
-#include <queue>
 
 namespace kgr {
 namespace log {

@@ -22,6 +22,10 @@ set(KGR_COMMON_INCLUDE_DIR
     "${CMAKE_CURRENT_LIST_DIR}/include/logger"
     "${CMAKE_CURRENT_LIST_DIR}/include/thread")
 
+configure_file(
+    "${CMAKE_SOURCE_DIR}/config.h.in"
+    "${CMAKE_SOURCE_DIR}/include/common/config/config.h")
+
 include_directories(${KGR_COMMON_INCLUDE_DIR})
 
 # 添加子目录

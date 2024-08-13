@@ -21,6 +21,7 @@
 
 namespace kgr {
 namespace filesystem {
+
 class DirectoryIterator;
 class DirectoryContainer
 {
@@ -84,5 +85,6 @@ private:
 #endif
     DirectoryContainer *m_container;
 };
+
 } // namespace filesystem
 } // namespace kgr

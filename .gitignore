@@ -39,4 +39,7 @@ build
 
 # others
 .cache
+include/common/config/config.h
+
+# output
 output

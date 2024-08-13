@@ -10,10 +10,10 @@
 #pragma once
 
 #include <cstdarg>
-#include <cstdint>
 
 namespace kgr {
 namespace log {
+
 class LogMessage
 {
 public:
@@ -31,5 +31,6 @@ private:
     char *m_buffer;
     int   m_length;
 };
+
 } // namespace log
 } // namespace kgr

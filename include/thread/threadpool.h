@@ -36,11 +36,11 @@ public:
     }
 
 private:
-    std::thread                                                    *m_threads;     // 线程队列
-    int                                                             m_threadNum;   // 线程池大小
-    int                                                             m_maxTaskSize; // 任务队列大小
-    bool                                                            m_runFlags;    // 运行标识
-    kgr::container::SynchronizedQueue<std::shared_ptr<IThreadTask>> m_taskQueue;   // 任务队列
+    std::thread                                            *m_threads;     // 线程队列
+    int                                                     m_threadNum;   // 线程池大小
+    int                                                     m_maxTaskSize; // 任务队列大小
+    bool                                                    m_runFlags;    // 运行标识
+    kgr::container::SyncQueue<std::shared_ptr<IThreadTask>> m_taskQueue;   // 任务队列
 };
 } // namespace thread
 } // namespace kgr

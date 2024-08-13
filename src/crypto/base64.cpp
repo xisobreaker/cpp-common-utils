@@ -78,11 +78,10 @@ int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen)
     }
 
     for (int i = srcLen - 1; i > 0; i--) {
-        if (srcBuf[i] == '=') {
-            dstLen -= 1;
-        } else {
+        if (srcBuf[i] != '=')
             break;
-        }
+
+        dstLen -= 1;
     }
     return dstLen;
 }

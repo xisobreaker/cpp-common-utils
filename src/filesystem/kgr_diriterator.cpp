@@ -2,6 +2,7 @@
 
 namespace kgr {
 namespace filesystem {
+
 DirectoryContainer::DirectoryContainer(const char *directory) : m_directory(directory)
 {
 }

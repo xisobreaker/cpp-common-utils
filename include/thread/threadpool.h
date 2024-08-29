@@ -42,5 +42,6 @@ private:
     bool                                                    m_runFlags;    // 运行标识
     kgr::container::SyncQueue<std::shared_ptr<IThreadTask>> m_taskQueue;   // 任务队列
 };
+
 } // namespace thread
 } // namespace kgr

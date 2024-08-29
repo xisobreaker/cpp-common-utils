@@ -1,5 +1,6 @@
 #include "kgr_hardware.h"
 
+#include <cpuid.h>
 #include <dirent.h>
 #include <fstream>
 #include <ifaddrs.h>
@@ -63,6 +64,36 @@ bool get_all_mac_address(std::map<std::string, std::string> &outMap)
     }
     closedir(dir);
     return true;
+}
+
+bool get_cpu_id(std::string &cpu_id)
+{
+    unsigned int level = 0;
+    unsigned int eax   = 0;
+    unsigned int ebx;
+    unsigned int ecx;
+    unsigned int edx;
+
+    __get_cpuid(level, &eax, &ebx, &ecx, &edx);
+    CPUVendorID vendorID{.ebx = ebx, .edx = edx, .ecx = ecx};
+
+    static const std::map<std::string, std::string> vendorIdToName = {
+        {"GenuineIntel", "Intel"                 },
+        {"AuthenticAMD", "AMD"                   },
+        {"CyrixInstead", "Cyrix"                 },
+        {"CentaurHauls", "Centaur"               },
+        {"SiS SiS SiS ", "SiS"                   },
+        {"NexGenDriven", "NexGen"                },
+        {"GenuineTMx86", "Transmeta"             },
+        {"RiseRiseRise", "Rise"                  },
+        {"UMC UMC UMC ", "UMC"                   },
+        {"Geode by NSC", "National Semiconductor"},
+    };
+
+    cpu_id = vendorID.toString();
+    return true;
+
+    return false;
 }
 
 } // namespace kgr

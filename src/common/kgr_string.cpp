@@ -209,4 +209,21 @@ bool str_endswith(const std::string &str, std::string end)
     return false;
 }
 
+bool split_http_url(std::string &domain, std::string &route, const std::string &httpurl)
+{
+    if (!str_startswith(httpurl, "http:") && !str_startswith(httpurl, "https:")) {
+        return false;
+    }
+
+    int pos = httpurl.find_first_of("/");
+    pos     = httpurl.find_first_of("/", pos + 2);
+    if (pos == std::string::npos) {
+        domain = httpurl;
+        route  = "/";
+        return true;
+    }
+    domain = httpurl.substr(0, pos);
+    route  = httpurl.substr(pos);
+    return true;
+}
 } // namespace kgr

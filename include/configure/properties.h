@@ -195,12 +195,22 @@ void PropertyTree::set(std::string section, std::string key, T value)
 }
 
 /**
- * 读取配置文件
+ * @brief 读取配置文件
+ *
+ * @param filename
+ * @param pt
+ * @return true
+ * @return false
  */
 bool read_profile(const std::string &filename, PropertyTree &pt);
 
 /**
- * 写入配置文件
+ * @brief 写入配置文件
+ *
+ * @param filename
+ * @param pt
+ * @return true
+ * @return false
  */
 bool write_profile(const std::string &filename, const PropertyTree &pt);
 

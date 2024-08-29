@@ -13,10 +13,20 @@
 #include <vector>
 
 namespace kgr {
-  
+
+struct CPUVendorID {
+    unsigned int ebx;
+    unsigned int edx;
+    unsigned int ecx;
+
+    std::string toString() const
+    {
+        return std::string(reinterpret_cast<const char *>(this), 12);
+    }
+};
 
 /**
- * @brief Get the network names object
+ * @brief 获取网卡名称
  *
  * @param outVec
  * @return true
@@ -25,7 +35,7 @@ namespace kgr {
 bool get_network_names(std::vector<std::string> &outVec);
 
 /**
- * @brief Get the mac address object
+ * @brief 获取网卡 mac 地址
  *
  * @param macAddress
  * @param netname
@@ -35,7 +45,7 @@ bool get_network_names(std::vector<std::string> &outVec);
 bool get_mac_address(std::string &macAddress, const std::string &netname);
 
 /**
- * @brief Get the all mac address object
+ * @brief 获取所有 mac 地址
  *
  * @param outMap
  * @return true

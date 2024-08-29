@@ -16,8 +16,11 @@
 #include <vector>
 
 namespace kgr {
+
 /**
- * 浮点数按照精度转换为字符串类型
+ * @brief 浮点数按照精度转换为字符串类型
+ *
+ * @tparam T
  * @param number 输入浮点型数字
  * @param limits 输出数字精度(整数加小数)
  * @return std::string 转换完成的字符串
@@ -54,20 +57,22 @@ std::string decimal2string(T number, int limits = 0)
 }
 
 /**
- * 十六进制数据转 hex
+ * @brief 十六进制数据转 hex
+ *
  * @param buf 十六进制数据
  * @param len 数据长度
- * @return hex 字符串
+ * @return std::string hex字符串
  */
 std::string bytes2hexstr(const unsigned char *buf, unsigned int len);
 
 /**
- * hex 字符串转 byte 数组
+ * @brief hex 字符串转 byte 数组
+ *
  * @param dst
  * @param dstLen 最大长度
  * @param src 源数据
  * @param srcLen 源数据长度
- * @return 实际数据长度
+ * @return int 实际数据长度
  */
 int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
 
@@ -81,9 +86,11 @@ int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsig
 std::string str_format(const char *fmt, ...);
 
 /**
- * 字符串分割
+ * @brief 字符串分割
+ *
  * @param msg 原始字符串
  * @param separator 分隔符
+ * @return std::vector<std::string>
  */
 std::vector<std::string> str_split(const std::string &msg, std::string separator);
 
@@ -108,27 +115,43 @@ char *str_split_values(char *str, char sep, const char *fmt, ...);
 std::string str_trim(const std::string &msg, const char ch);
 
 /**
- * 字符串替换
- * @param string msg 原始字符串
- * @param string src 替换前的字符
- * @param string dst 替换后的字符
+ * @brief 字符串替换
+ *
+ * @param msg 原始字符串
+ * @param src 替换前的字符
+ * @param dst 替换后的字符
+ * @return std::string
  */
-
 std::string str_replace(const std::string &msg, std::string src, std::string dst);
 
 /**
- * string 起始字符串判断
+ * @brief 起始字符串判断
+ *
  * @param str 字符串
  * @param start 起始字符串
- * @return true/false
+ * @return true
+ * @return false
  */
 bool str_startswith(const std::string &str, std::string start);
 
 /**
- * string 结束字符串判断
+ * @brief 结束字符串判断
+ *
  * @param str 字符串
  * @param end 结束字符串
- * @return true/false
+ * @return true
+ * @return false
  */
 bool str_endswith(const std::string &str, std::string end);
+
+/**
+ * @brief HTTP地址分割
+ *
+ * @param domain 分割后的域名(IP:端口)
+ * @param route 路由地址
+ * @param httpurl 原始HTTP地址字符串
+ * @return true
+ * @return false
+ */
+bool split_http_url(std::string &domain, std::string &route, const std::string &httpurl);
 } // namespace kgr

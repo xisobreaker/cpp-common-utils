@@ -79,12 +79,11 @@ public:
     /**
      * @brief 出队列
      *
-     * @param result
-     * @param waitMs
+     * @param data
      * @return true
      * @return false
      */
-    void wait_pop_front(T &data)
+    bool wait_pop_front(T &data)
     {
         std::unique_lock<std::mutex> lock(m_mutex);
         while (m_queue.empty() && !m_shutdown) {
@@ -92,11 +91,12 @@ public:
         }
 
         if (m_queue.empty() || m_shutdown) {
-            return;
+            return false;
         }
 
         data = m_queue.front();
         m_queue.pop_front();
+        return true;
     }
 
     /**

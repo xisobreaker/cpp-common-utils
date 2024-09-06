@@ -3,5 +3,6 @@
 // clang-format off
 
 #define PROJECT_VERSION "@PROJECT_VERSION@"
+#define SYSTEM_PROCESSOR "@SYSTEM_PROCESSOR@"
 
 // clang-format on

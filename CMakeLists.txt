@@ -10,6 +10,14 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Chosse the type of build, Debug or Release" FORCE)
 endif()
 
+if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL x86_64)
+    set(SYSTEM_PROCESSOR x86_64)
+endif()
+
+if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL aarch64)
+    set(SYSTEM_PROCESSOR aarch64)
+endif()
+
 # 设置输出路径
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/output/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/output/lib)

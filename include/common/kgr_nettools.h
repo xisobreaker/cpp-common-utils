@@ -9,6 +9,10 @@
 
 #pragma once
 
+#include <arpa/inet.h>
+#include <cstdint>
+#include <string>
+
 namespace kgr {
 
 /**
@@ -26,5 +30,29 @@ unsigned long long htonll(unsigned long long val);
  * @return unsigned long long 主机序
  */
 unsigned long long ntohll(unsigned long long val);
+
+const struct sockaddr     *sockaddr_cast(const struct sockaddr_in *addr);
+const struct sockaddr     *sockaddr_cast(const struct sockaddr_in6 *addr);
+struct sockaddr           *sockaddr_cast(struct sockaddr_in6 *addr);
+const struct sockaddr_in  *sockaddr_in_cast(const struct sockaddr *addr);
+const struct sockaddr_in6 *sockaddr_in6_cast(const struct sockaddr *addr);
+
+/**
+ * @brief
+ *
+ * @param buf
+ * @param size
+ * @param addr
+ */
+void sockaddr_to_ip(char *buf, size_t size, const struct sockaddr *addr);
+
+/**
+ * @brief
+ *
+ * @param buf
+ * @param size
+ * @param addr
+ */
+void sockaddr_to_ipport(char *buf, size_t size, const struct sockaddr *addr);
 
 } // namespace kgr

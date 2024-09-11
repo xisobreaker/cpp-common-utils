@@ -1,14 +1,12 @@
-#include "test_crypto.h"
+#include "test.h"
 
-#include <cstring>
 #include <iostream>
-
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-    test_base64();
-    test_md5();
-    test_des();
+    for (int i = 0; main_testcases[i].func; i++) {
+        main_testcases[i].func();
+    }
     return 0;
 }

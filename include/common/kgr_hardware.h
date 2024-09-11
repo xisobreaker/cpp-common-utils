@@ -53,4 +53,13 @@ bool get_mac_address(std::string &macAddress, const std::string &netname);
  */
 bool get_all_mac_address(std::map<std::string, std::string> &outMap);
 
+/**
+ * @brief 获取CPU ID
+ *
+ * @param cpu_id
+ * @return true
+ * @return false
+ */
+bool get_cpu_id(std::string &cpu_id);
+
 } // namespace kgr

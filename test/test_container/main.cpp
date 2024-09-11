@@ -1,22 +1,12 @@
-#include "sync_queue.h"
+#include "test.h"
 
-class TestClass
-{
-public:
-    TestClass(int n) : val(n){};
-    ~TestClass(){};
-
-private:
-    int val;
-};
+#include <iostream>
+using namespace std;
 
 int main(int argc, char *argv[])
 {
-    kgr::container::SyncQueue<TestClass *> queue;
-    for (int i = 0; i < 10; i++) {
-        auto obj = new TestClass(i);
-        queue.push_back(obj);
+    for (int i = 0; main_testcases[i].func; i++) {
+        main_testcases[i].func();
     }
-    queue.shutdown();
     return 0;
 }

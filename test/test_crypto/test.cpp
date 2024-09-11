@@ -1,4 +1,4 @@
-#include "test_crypto.h"
+#include "test.h"
 
 #include "base64.h"
 #include "des.h"
@@ -50,3 +50,5 @@ void test_base64()
 
     kgr_assert_strequal(message, source.get());
 }
+
+struct testcase_t main_testcases[] = {{test_md5}, {test_des}, {test_base64}, END_OF_TESTCASES};

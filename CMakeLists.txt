@@ -41,6 +41,7 @@ include_directories(${KGR_COMMON_INCLUDE_DIR})
 
 # 添加子目录
 add_subdirectory(src)
+add_subdirectory(examples)
 
 include(CTest)
 if(BUILD_TESTING)

@@ -14,6 +14,7 @@
 
 #include <fstream>
 #include <map>
+#include <memory>
 #include <string>
 #include <thread>
 
@@ -27,6 +28,8 @@ static constexpr int LOG_LEVEL_ERROR = 3;
 
 class LogManager : public LogInstance<LogManager>
 {
+    friend LogInstance<LogManager>;
+
 public:
     LogManager();
     virtual ~LogManager();
@@ -36,9 +39,22 @@ public:
     void setLogKeepDays(int keepDays);
     void setLoggingLevel(int level);
     void logRecord(int level, const char *format, ...);
+    void startLogging();
 
 private:
-    void openLogFile(int level);
+    /**
+     * @brief 打开文件输出流
+     *
+     * @param level
+     */
+    void openLogStream(int level);
+
+    /**
+     * @brief 移除 log 日志文件
+     *
+     * @return true
+     * @return false
+     */
     bool removeLogFiles();
     void loggerWorkerThread();
 
@@ -48,16 +64,13 @@ private:
     std::map<int, std::fstream> m_logStream;
 
 private:
-    bool        m_bWriteLog; // 是否写入日志文件
-    bool        m_bRunning;  // 运行状态
-    int         m_logLevel;  // 记录的日志级别
-    int         m_keepDays;  // 日志保留天数
-    uint64_t    m_lastTime;  // 上次日志创建时间
-    LogQueue   *m_logQueue;
-    std::thread m_thHandle;
-
-public:
-    friend LogInstance<LogManager>;
+    bool                         m_bWriteLog; // 是否写入日志文件
+    bool                         m_bRunning;  // 运行状态
+    int                          m_logLevel;  // 记录的日志级别
+    int                          m_keepDays;  // 日志保留天数
+    uint64_t                     m_lastTime;  // 上次日志创建时间
+    LogQueue                    *m_logQueue;
+    std::unique_ptr<std::thread> m_thHandle;
 };
 
 } // namespace log

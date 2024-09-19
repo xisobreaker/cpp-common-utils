@@ -5,11 +5,13 @@
 #include "kgr_filesystem.h"
 #include "kgr_string.h"
 #include "kgr_timer.h"
+#include "log_constants.h"
 #include "log_queue.h"
 
 #include <chrono>
 #include <cstring>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 
 using namespace std;
@@ -18,22 +20,20 @@ namespace kgr {
 namespace log {
 LogManager *g_logManager = new LogManager();
 
-LogManager::LogManager()
+LogManager::LogManager() : m_bRunning(false)
 {
-    m_bRunning  = true;
     m_bWriteLog = false;
     m_logLevel  = LOG_LEVEL_INFO;
     m_keepDays  = 0;
     m_lastTime  = 0;
     m_logQueue  = new LogQueue();
-    m_thHandle  = std::thread(&LogManager::loggerWorkerThread, this);
 }
 
 LogManager::~LogManager()
 {
     m_bRunning = false;
-    if (m_thHandle.joinable())
-        m_thHandle.join();
+    if (m_thHandle && m_thHandle->joinable())
+        m_thHandle->join();
     if (m_logQueue)
         delete m_logQueue;
 }
@@ -72,6 +72,20 @@ void LogManager::setLoggingLevel(int level)
 
 void LogManager::logRecord(int level, const char *format, ...)
 {
+    if (!m_bRunning) {
+        static char  buf[LOG_LINE_SIZE];
+        std::va_list args;
+        ::va_start(args, format);
+#if defined(KGR_PLATFORM_LINUX)
+        int n = vsnprintf(buf, LOG_LINE_SIZE, format, args);
+#elif defined(KGR_PLATFORM_WINDOWS)
+        int n = vsprintf_s(buf, LOG_LINE_SIZE, format, args);
+#endif
+        std::cout << buf;
+        ::va_end(args);
+        return;
+    }
+
     LogMessage *log = nullptr;
     do {
         log = m_logQueue->getProducer();
@@ -85,7 +99,13 @@ void LogManager::logRecord(int level, const char *format, ...)
     m_logQueue->putConsumer(log);
 }
 
-void LogManager::openLogFile(int level)
+void LogManager::startLogging()
+{
+    m_bRunning = true;
+    m_thHandle.reset(new std::thread(&LogManager::loggerWorkerThread, this));
+}
+
+void LogManager::openLogStream(int level)
 {
     std::ostringstream oss;
 
@@ -126,11 +146,13 @@ bool LogManager::removeLogFiles()
             continue;
         }
 
+        // 截取文件末尾字符串，并格式化为日期时间戳，进行当前时间的比较
         std::string filename = entry.file_name();
         if (!entry.is_directory() && str_startswith(filename, m_filename)) {
             int position = filename.rfind('.');
 
             struct tm timeinfo;
+            memset(&timeinfo, 0, sizeof(timeinfo));
             timeinfo.tm_year = atoi(filename.substr(position + 1, 4).c_str()) - 1900;
             timeinfo.tm_mon  = atoi(filename.substr(position + 5, 2).c_str()) - 1;
             timeinfo.tm_mday = atoi(filename.substr(position + 7, 2).c_str());
@@ -168,7 +190,7 @@ void LogManager::loggerWorkerThread()
 
         if (m_bWriteLog && log->level() >= m_logLevel) {
             if (!m_logStream[log->level()].is_open()) {
-                openLogFile(log->level());
+                openLogStream(log->level());
             }
             m_logStream[log->level()].write(log->getMessage(), log->length());
             m_logStream[log->level()].flush();

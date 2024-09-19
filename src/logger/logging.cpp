@@ -11,6 +11,7 @@ bool init_log_manager(std::string filename, int keepDays, int level)
     }
     logManager->setLogKeepDays(keepDays);
     logManager->setLoggingLevel(level);
+    logManager->startLogging();
     return true;
 }
 

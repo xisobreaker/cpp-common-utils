@@ -2,3 +2,6 @@ project(examples)
 
 add_executable(example_string2hex string2hex.cpp)
 target_link_libraries(example_string2hex kgr_common)
+
+add_executable(example_scheduled crontab_task.cpp)
+target_link_libraries(example_scheduled kgr_thread)

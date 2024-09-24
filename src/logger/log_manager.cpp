@@ -170,7 +170,7 @@ void LogManager::loggerWorkerThread()
     while (m_bRunning) {
         auto curTime = kgr::get_current_timestamp<chrono::seconds>();
         if (curTime - m_lastTime > 86400) {
-            m_lastTime = curTime - curTime % 86400;
+            m_lastTime = curTime - curTime % 86400 - 3600 * 8;
 
             auto iter = m_logStream.begin();
             for (; iter != m_logStream.end(); iter++) {

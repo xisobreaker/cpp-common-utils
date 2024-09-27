@@ -55,31 +55,13 @@ inline uint64_t get_current_timestamp<std::chrono::microseconds>()
 /**
  * @brief 时间戳时间转 timepoint
  *
- * @tparam T
+ * @tparam Rep
+ * @tparam Period
  * @param timestamp
  * @return std::chrono::system_clock::time_point
  */
-template <typename T>
-inline std::chrono::system_clock::time_point timestamp_to_timepoint(T timestamp)
-{
-    static_assert(dependent_false<T>, "Template types not allowed.");
-    return std::chrono::system_clock::time_point();
-}
-
-template <>
-inline std::chrono::system_clock::time_point timestamp_to_timepoint(std::chrono::seconds timestamp)
-{
-    return std::chrono::system_clock::time_point() + timestamp;
-}
-
-template <>
-inline std::chrono::system_clock::time_point timestamp_to_timepoint(std::chrono::milliseconds timestamp)
-{
-    return std::chrono::system_clock::time_point() + timestamp;
-}
-
-template <>
-inline std::chrono::system_clock::time_point timestamp_to_timepoint(std::chrono::microseconds timestamp)
+template <typename Rep, typename Period>
+inline std::chrono::system_clock::time_point timestamp_to_timepoint(std::chrono::duration<Rep, Period> timestamp)
 {
     return std::chrono::system_clock::time_point() + timestamp;
 }

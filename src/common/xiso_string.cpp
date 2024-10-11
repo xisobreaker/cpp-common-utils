@@ -1,11 +1,10 @@
-#include "kgr_string.h"
-
 #include "config/platform.h"
+#include "xiso_string.h"
 
 #include <cstdarg>
 #include <cstring>
 
-namespace kgr {
+namespace xiso {
 
 std::string bytes2hexstr(const unsigned char *buf, unsigned int len)
 {
@@ -58,9 +57,9 @@ std::string str_format(const char *fmt, ...)
     char    buf[4096] = {0};
     va_list args;
     va_start(args, fmt);
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     int n = vsnprintf(buf, 4096, fmt, args);
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     int n = vsprintf_s(buf, 4096, fmt, args);
 #endif
     va_end(args);
@@ -226,4 +225,4 @@ bool split_http_url(std::string &domain, std::string &route, const std::string &
     route  = httpurl.substr(pos);
     return true;
 }
-} // namespace kgr
+} // namespace xiso

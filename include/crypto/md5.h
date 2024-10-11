@@ -11,7 +11,7 @@
 #define _MD5_ENCRYPT_H_H_H
 
 #include <string>
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 /**
@@ -24,5 +24,5 @@ namespace crypto {
 std::string md5_encrypt_hex(const unsigned char *srcBuf, int srcLen);
 
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso
 #endif

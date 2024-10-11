@@ -1,7 +1,7 @@
 #include "test.h"
 
-#include "kgr_assert.h"
 #include "sync_queue.h"
+#include "xiso_assert.h"
 
 #include <iostream>
 #include <sstream>
@@ -10,10 +10,10 @@
 
 void test_sync_queue()
 {
-    constexpr static int                   thread_num = 10;
-    constexpr static int                   write_num  = 10000;
-    kgr::container::SyncQueue<std::string> data_queue;
-    std::thread                            thread_list[thread_num];
+    constexpr static int                    thread_num = 10;
+    constexpr static int                    write_num  = 10000;
+    xiso::container::SyncQueue<std::string> data_queue;
+    std::thread                             thread_list[thread_num];
     for (int i = 0; i < thread_num; i++) {
         thread_list[i] = std::thread([&]() {
             std::ostringstream oss;
@@ -37,7 +37,7 @@ void test_sync_queue()
         ++count;
     }
 
-    kgr_assert_equal(thread_num * write_num, count);
+    xiso_assert_equal(thread_num * write_num, count);
 }
 
 struct testcase_t main_testcases[] = {{test_sync_queue}, END_OF_TESTCASES};

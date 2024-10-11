@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <cstring>
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 LogMessage::LogMessage()
@@ -30,9 +30,9 @@ char *LogMessage::getMessage()
 
 int LogMessage::setMessage(int level, const char *format, va_list &args)
 {
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     int n = vsnprintf(m_buffer, LOG_LINE_SIZE, format, args);
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     int n = vsprintf_s(m_buffer, LOG_LINE_SIZE, format, args);
 #endif
 
@@ -52,4 +52,4 @@ int LogMessage::level()
 }
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

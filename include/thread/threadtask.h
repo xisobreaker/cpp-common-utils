@@ -11,7 +11,7 @@
 
 #include <functional>
 
-namespace kgr {
+namespace xiso {
 namespace thread {
 
 class IThreadTask
@@ -63,4 +63,4 @@ private:
 };
 
 } // namespace thread
-} // namespace kgr
+} // namespace xiso

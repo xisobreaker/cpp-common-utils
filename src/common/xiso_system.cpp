@@ -1,6 +1,6 @@
-#include "kgr_system.h"
+#include "xiso_system.h"
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     #include <signal.h>
 
 void sig_process(int signo, void (*handler)(int))

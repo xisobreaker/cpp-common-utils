@@ -1,7 +1,7 @@
 // =====================================================================================
 //  Copyright (C) 2024 by Jiaxing Shao. All rights reserved
 //
-//  文 件 名:  kgr_diriterator.h
+//  文 件 名:  xiso_diriterator.h
 //  作    者:  Jiaxing Shao, 980853650@qq.com
 //  创建时间:  2024-06-11 16:35:12
 //  描    述:
@@ -13,13 +13,13 @@
 
 #include <string>
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     #include <dirent.h>
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     #include <windows.h>
 #endif
 
-namespace kgr {
+namespace xiso {
 namespace filesystem {
 
 class DirectoryIterator;
@@ -42,9 +42,9 @@ private:
 class DirectoryEntry
 {
 public:
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     DirectoryEntry(dirent *entry);
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     DirectoryEntry(WIN32_FIND_DATA entry);
 #endif
     ~DirectoryEntry();
@@ -54,9 +54,9 @@ public:
     std::string file_name();
 
 private:
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     struct dirent *m_entry;
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     WIN32_FIND_DATA m_entry;
 #endif
 };
@@ -75,10 +75,10 @@ public:
     DirectoryEntry current();
 
 private:
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     DIR           *m_dirHandler;
     struct dirent *m_entry;
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     HANDLE          m_dirHandler;
     WIN32_FIND_DATA m_entry;
     bool            m_successful;
@@ -87,4 +87,4 @@ private:
 };
 
 } // namespace filesystem
-} // namespace kgr
+} // namespace xiso

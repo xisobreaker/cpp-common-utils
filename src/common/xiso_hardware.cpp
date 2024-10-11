@@ -1,4 +1,4 @@
-#include "kgr_hardware.h"
+#include "xiso_hardware.h"
 
 #include <cpuid.h>
 #include <dirent.h>
@@ -6,7 +6,7 @@
 #include <ifaddrs.h>
 #include <iostream>
 
-namespace kgr {
+namespace xiso {
 
 bool get_network_names(std::vector<std::string> &outVec)
 {
@@ -96,4 +96,4 @@ bool get_cpu_id(std::string &cpu_id)
     return false;
 }
 
-} // namespace kgr
+} // namespace xiso

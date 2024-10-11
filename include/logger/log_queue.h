@@ -15,7 +15,7 @@
 #include <deque>
 #include <mutex>
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 class LogQueue
@@ -41,4 +41,4 @@ private:
 };
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

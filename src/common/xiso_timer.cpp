@@ -1,9 +1,9 @@
-#include "kgr_timer.h"
+#include "xiso_timer.h"
 
 #include <chrono>
 #include <iomanip>
 
-namespace kgr {
+namespace xiso {
 
 std::chrono::system_clock::time_point timer_to_timepoint(std::time_t timestamp)
 {
@@ -88,4 +88,4 @@ uint64_t string_format_time(const std::string &format, const std::string &dateti
     return (uint64_t)timer * 1000000 + usec;
 }
 
-} // namespace kgr
+} // namespace xiso

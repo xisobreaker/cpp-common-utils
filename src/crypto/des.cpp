@@ -90,7 +90,7 @@ static const int IPEND_TABLE[64] = {40, 8,  48, 16, 56, 24, 64, 32, 39, 7,  47, 
                                     62, 30, 37, 5,  45, 13, 53, 21, 61, 29, 36, 4,  44, 12, 52, 20, 60, 28, 35, 3,  43, 11,
                                     51, 19, 59, 27, 34, 2,  42, 10, 50, 18, 58, 26, 33, 1,  41, 9,  49, 17, 57, 25};
 
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 DesCrypto::DesCrypto()
@@ -435,4 +435,4 @@ int DesCrypto::decryptBase64(std::string &strMsg, char *pBuf, int nMaxLen)
 }
 
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso

@@ -1,6 +1,6 @@
 #include "logging.h"
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 bool init_log_manager(std::string filename, int keepDays, int level)
@@ -16,4 +16,4 @@ bool init_log_manager(std::string filename, int keepDays, int level)
 }
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

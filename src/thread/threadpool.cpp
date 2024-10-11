@@ -1,6 +1,6 @@
 #include "threadpool.h"
 
-namespace kgr {
+namespace xiso {
 namespace thread {
 
 ThreadPool::ThreadPool(int threadNum, int taskSize) : m_threadNum(threadNum), m_maxTaskSize(taskSize), m_runFlags(false)
@@ -56,4 +56,4 @@ bool ThreadPool::addTask(std::shared_ptr<IThreadTask> task)
 }
 
 } // namespace thread
-} // namespace kgr
+} // namespace xiso

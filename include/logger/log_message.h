@@ -11,7 +11,7 @@
 
 #include <cstdarg>
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 class LogMessage
@@ -33,4 +33,4 @@ private:
 };
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

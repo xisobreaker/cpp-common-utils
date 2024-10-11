@@ -9,51 +9,53 @@
 
 #pragma once
 
-#include "kgr_file.h"
-#include "kgr_timer.h"
 #include "log_manager.h"
+#include "xiso_file.h"
+#include "xiso_timer.h"
 
 #include <cstring>
 #include <string>
 
 #if defined(__GNUC__)
-    #define log_debug(format, args...)                                                                                    \
+    #define log_debug(format, args...)                                                                                     \
+        do {                                                                                                               \
+            xiso::log::LogManager *logManager = xiso::log::LogManager::getInstance();                                      \
+            std::string            datetime   = xiso::get_current_format_datetime();                                       \
+            const char            *basename   = xiso::extract_file_name(__FILE__);                                         \
+            logManager->logRecord(                                                                                         \
+                xiso::log::LOG_LEVEL_DEBUG, "[%s][%s:%d][D]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
+        } while (0)
+
+    #define log_info(format, args...)                                                                                     \
         do {                                                                                                              \
-            kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                       \
-            std::string           datetime   = kgr::get_current_format_datetime();                                        \
-            const char           *basename   = kgr::extract_file_name(__FILE__);                                          \
+            xiso::log::LogManager *logManager = xiso::log::LogManager::getInstance();                                     \
+            std::string            datetime   = xiso::get_current_format_datetime();                                      \
+            const char            *basename   = xiso::extract_file_name(__FILE__);                                        \
             logManager->logRecord(                                                                                        \
-                kgr::log::LOG_LEVEL_DEBUG, "[%s][%s:%d][D]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
+                xiso::log::LOG_LEVEL_INFO, "[%s][%s:%d][I]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)
 
-    #define log_info(format, args...)                                                                                                      \
-        do {                                                                                                                               \
-            kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                                        \
-            std::string           datetime   = kgr::get_current_format_datetime();                                                         \
-            const char           *basename   = kgr::extract_file_name(__FILE__);                                                           \
-            logManager->logRecord(kgr::log::LOG_LEVEL_INFO, "[%s][%s:%d][I]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
-        } while (0)
-
-    #define log_warn(format, args...)                                                                                                      \
-        do {                                                                                                                               \
-            kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                                        \
-            std::string           datetime   = kgr::get_current_format_datetime();                                                         \
-            const char           *basename   = kgr::extract_file_name(__FILE__);                                                           \
-            logManager->logRecord(kgr::log::LOG_LEVEL_WARN, "[%s][%s:%d][W]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
-        } while (0)
-
-    #define log_error(format, args...)                                                                                    \
+    #define log_warn(format, args...)                                                                                     \
         do {                                                                                                              \
-            kgr::log::LogManager *logManager = kgr::log::LogManager::getInstance();                                       \
-            std::string           datetime   = kgr::get_current_format_datetime();                                        \
-            const char           *basename   = kgr::extract_file_name(__FILE__);                                          \
+            xiso::log::LogManager *logManager = xiso::log::LogManager::getInstance();                                     \
+            std::string            datetime   = xiso::get_current_format_datetime();                                      \
+            const char            *basename   = xiso::extract_file_name(__FILE__);                                        \
             logManager->logRecord(                                                                                        \
-                kgr::log::LOG_LEVEL_ERROR, "[%s][%s:%d][E]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
+                xiso::log::LOG_LEVEL_WARN, "[%s][%s:%d][W]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
+        } while (0)
+
+    #define log_error(format, args...)                                                                                     \
+        do {                                                                                                               \
+            xiso::log::LogManager *logManager = xiso::log::LogManager::getInstance();                                      \
+            std::string            datetime   = xiso::get_current_format_datetime();                                       \
+            const char            *basename   = xiso::extract_file_name(__FILE__);                                         \
+            logManager->logRecord(                                                                                         \
+                xiso::log::LOG_LEVEL_ERROR, "[%s][%s:%d][E]: " format "\n", datetime.c_str(), basename, __LINE__, ##args); \
         } while (0)
 #elif defined(_MSC_VER)
 #endif
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 /**
@@ -65,4 +67,4 @@ namespace log {
 bool init_log_manager(std::string filename, int keepDays = 30, int level = 1);
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

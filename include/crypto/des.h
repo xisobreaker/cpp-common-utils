@@ -12,7 +12,7 @@
 
 #include <string>
 
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 enum PaddingType {
@@ -57,6 +57,6 @@ private:
 };
 
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso
 
 #endif

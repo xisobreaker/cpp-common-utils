@@ -1,7 +1,7 @@
 // =====================================================================================
 //  Copyright (C) 2024 by Jiaxing Shao. All rights reserved
 //
-//  文 件 名:  kgr_timer.h
+//  文 件 名:  xiso_timer.h
 //  作    者:  Jiaxing Shao, 980853650@qq.com
 //  创建时间:  2024-05-24 17:29:41
 //  描    述:
@@ -13,7 +13,7 @@
 #include <chrono>
 #include <string>
 
-namespace kgr {
+namespace xiso {
 
 template <typename>
 constexpr bool dependent_false = false;
@@ -114,4 +114,4 @@ double method_elapsed_time(F const &func)
     return std::chrono::duration<double, std::milli>(end - begin).count();
 }
 
-} // namespace kgr
+} // namespace xiso

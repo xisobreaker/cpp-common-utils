@@ -8,7 +8,7 @@
 
 using namespace std::chrono;
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 LogQueue::LogQueue()
@@ -88,4 +88,4 @@ size_t LogQueue::getProducerSize()
 }
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

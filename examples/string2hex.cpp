@@ -1,4 +1,4 @@
-#include "kgr_string.h"
+#include "xiso_string.h"
 
 #include <iostream>
 using namespace std;
@@ -33,8 +33,8 @@ int main()
 
     unsigned char buf[65535] = {0};
 
-    int len = kgr::hexstr2bytes(buf, 1024, str.c_str(), str.length());
-    std::cout << kgr::bytes2hexstr(buf, len) << std::endl;
+    int len = xiso::hexstr2bytes(buf, 1024, str.c_str(), str.length());
+    std::cout << xiso::bytes2hexstr(buf, len) << std::endl;
 
     return 0;
 }

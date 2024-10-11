@@ -1,6 +1,6 @@
 #pragma once
 
-namespace kgr {
+namespace xiso {
 
 /**
  * @brief 异或校验
@@ -20,4 +20,4 @@ unsigned char bcc_check_8(unsigned char *buf, unsigned int len);
  */
 unsigned short crc16_xmodem(unsigned char *data, unsigned short len);
 
-} // namespace kgr
+} // namespace xiso

@@ -16,7 +16,7 @@
 #include <mutex>
 #include <type_traits>
 
-namespace kgr {
+namespace xiso {
 namespace container {
 
 /**
@@ -157,4 +157,4 @@ private:
     std::condition_variable m_condition;
 };
 } // namespace container
-} // namespace kgr
+} // namespace xiso

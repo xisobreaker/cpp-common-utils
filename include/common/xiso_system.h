@@ -1,7 +1,7 @@
 // =====================================================================================
 //  Copyright (C) 2024 by Jiaxing Shao. All rights reserved
 //
-//  文 件 名:  kgr_system.h
+//  文 件 名:  xiso_system.h
 //  作    者:  Jiaxing Shao, 980853650@qq.com
 //  创建时间:  2024-05-24 17:29:34
 //  描    述:
@@ -13,7 +13,7 @@
 
 #include <string>
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
 
 /**
  * @brief UNIX 信号处理

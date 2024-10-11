@@ -10,17 +10,17 @@
 #ifndef _PLATFORM_H_H_H
 #define _PLATFORM_H_H_H
 
-#if defined(KGR_PLATFORM_LINUX) || (defined(__linux) || defined(__linux__))
-    #undef KGR_PLATFORM_LINUX
-    #define KGR_PLATFORM_LINUX 1
+#if defined(XISO_PLATFORM_LINUX) || (defined(__linux) || defined(__linux__))
+    #undef XISO_PLATFORM_LINUX
+    #define XISO_PLATFORM_LINUX 1
 
-    #define KGR_PLATFORM_NAME "Linux"
+    #define XISO_PLATFORM_NAME "Linux"
 
-#elif defined(KGR_PLATFORM_WINDOWS) || (defined(_WIN32) || defined(__WIN32__) || defined(_WIN64))
-    #undef KGR_PLATFORM_WINDOWS
-    #define KGR_PLATFORM_WINDOWS 1
+#elif defined(XISO_PLATFORM_WINDOWS) || (defined(_WIN32) || defined(__WIN32__) || defined(_WIN64))
+    #undef XISO_PLATFORM_WINDOWS
+    #define XISO_PLATFORM_WINDOWS 1
 
-    #define KGR_PLATFORM_NAME "Windows"
+    #define XISO_PLATFORM_NAME "Windows"
 #endif
 
 #endif

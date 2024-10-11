@@ -1,6 +1,6 @@
 #pragma once
 
-namespace kgr {
+namespace xiso {
 
 template <typename To, typename From>
 inline To implicit_cast(From const &f)
@@ -8,4 +8,4 @@ inline To implicit_cast(From const &f)
     return f;
 }
 
-} // namespace kgr
+} // namespace xiso

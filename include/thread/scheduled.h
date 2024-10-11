@@ -16,7 +16,7 @@
 #include <set>
 #include <thread>
 
-namespace kgr {
+namespace xiso {
 
 class Scheduled
 {
@@ -86,4 +86,4 @@ private:
     std::multiset<CrontabTask>   m_taskList;
 };
 
-} // namespace kgr
+} // namespace xiso

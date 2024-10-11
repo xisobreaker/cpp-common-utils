@@ -28,7 +28,7 @@ configure_file(
     "${CMAKE_SOURCE_DIR}/config.h.in"
     "${CMAKE_SOURCE_DIR}/include/common/config/config.h")
 
-set(KGR_COMMON_INCLUDE_DIR
+set(XISO_COMMON_INCLUDE_DIR
     "${CMAKE_CURRENT_LIST_DIR}/include/common"
     "${CMAKE_CURRENT_LIST_DIR}/include/configure"
     "${CMAKE_CURRENT_LIST_DIR}/include/container"
@@ -37,7 +37,7 @@ set(KGR_COMMON_INCLUDE_DIR
     "${CMAKE_CURRENT_LIST_DIR}/include/logger"
     "${CMAKE_CURRENT_LIST_DIR}/include/thread")
 
-include_directories(${KGR_COMMON_INCLUDE_DIR})
+include_directories(${XISO_COMMON_INCLUDE_DIR})
 
 # 添加子目录
 add_subdirectory(src)

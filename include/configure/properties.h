@@ -15,7 +15,7 @@
 #include <unordered_map>
 #include <utility>
 
-namespace kgr {
+namespace xiso {
 namespace config {
 
 class PropertyValue
@@ -215,6 +215,6 @@ bool read_profile(const std::string &filename, PropertyTree &pt);
 bool write_profile(const std::string &filename, const PropertyTree &pt);
 
 } // namespace config
-} // namespace kgr
+} // namespace xiso
 
 #endif

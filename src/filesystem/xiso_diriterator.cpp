@@ -1,6 +1,6 @@
-#include "kgr_diriterator.h"
+#include "xiso_diriterator.h"
 
-namespace kgr {
+namespace xiso {
 namespace filesystem {
 
 DirectoryContainer::DirectoryContainer(const char *directory) : m_directory(directory)
@@ -27,7 +27,7 @@ DirectoryEntry::~DirectoryEntry()
 {
 }
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
 DirectoryEntry::DirectoryEntry(dirent *entry)
 {
     m_entry = entry;
@@ -43,7 +43,7 @@ std::string DirectoryEntry::file_name()
     return std::string(m_entry->d_name);
 }
 
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
 DirectoryEntry::DirectoryEntry(WIN32_FIND_DATA entry)
 {
     m_entry = entry;
@@ -65,10 +65,10 @@ std::string DirectoryEntry::file_name()
 DirectoryIterator::DirectoryIterator(DirectoryContainer *container)
 {
     m_container = container;
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     m_dirHandler = nullptr;
     m_entry      = nullptr;
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     m_dirHandler = 0;
     m_successful = false;
 #endif
@@ -77,15 +77,15 @@ DirectoryIterator::DirectoryIterator(DirectoryContainer *container)
 DirectoryIterator::~DirectoryIterator()
 {
     if (m_dirHandler) {
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
         closedir(m_dirHandler);
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
         FindClose(m_dirHandler);
 #endif
     }
 }
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
 void DirectoryIterator::start()
 {
     m_dirHandler = opendir(m_container->m_directory.c_str());
@@ -104,7 +104,7 @@ bool DirectoryIterator::isDone()
     return m_entry == nullptr;
 }
 
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
 void DirectoryIterator::start()
 {
     std::string findpath = m_container->m_directory;
@@ -135,4 +135,4 @@ DirectoryEntry DirectoryIterator::current()
     return DirectoryEntry(m_entry);
 }
 } // namespace filesystem
-} // namespace kgr
+} // namespace xiso

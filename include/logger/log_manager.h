@@ -18,7 +18,7 @@
 #include <string>
 #include <thread>
 
-namespace kgr {
+namespace xiso {
 namespace log {
 
 static constexpr int LOG_LEVEL_DEBUG = 0;
@@ -74,4 +74,4 @@ private:
 };
 
 } // namespace log
-} // namespace kgr
+} // namespace xiso

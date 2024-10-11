@@ -10,7 +10,7 @@
 #ifndef _BASE64_H_H_H
 #define _BASE64_H_H_H
 
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 /**
@@ -36,6 +36,6 @@ int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen);
 
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso
 
 #endif

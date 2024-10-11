@@ -74,7 +74,7 @@ typedef struct {
         (a) += (b);                                         \
     }
 
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 void MD5_Initialize(MD5Context *context)
@@ -258,4 +258,4 @@ std::string md5_encrypt_hex(const unsigned char *srcBuf, int srcLen)
     return std::string(msg);
 }
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso

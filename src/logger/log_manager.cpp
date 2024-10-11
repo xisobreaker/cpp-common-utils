@@ -1,12 +1,12 @@
 #include "log_manager.h"
 
-#include "kgr_diriterator.h"
-#include "kgr_file.h"
-#include "kgr_filesystem.h"
-#include "kgr_string.h"
-#include "kgr_timer.h"
 #include "log_constants.h"
 #include "log_queue.h"
+#include "xiso_diriterator.h"
+#include "xiso_file.h"
+#include "xiso_filesystem.h"
+#include "xiso_string.h"
+#include "xiso_timer.h"
 
 #include <chrono>
 #include <cstring>
@@ -16,7 +16,7 @@
 
 using namespace std;
 
-namespace kgr {
+namespace xiso {
 namespace log {
 LogManager *g_logManager = new LogManager();
 
@@ -51,7 +51,7 @@ bool LogManager::setLogFilepath(std::string filename)
     }
 
     // 递归创建日志目录
-    kgr::filesystem::create_directory_recurse(filename.substr(0, pos));
+    xiso::filesystem::create_directory_recurse(filename.substr(0, pos));
     m_filepath  = filename.substr(0, pos + 1);
     m_filename  = filename.substr(pos + 1, filename.length());
     m_bWriteLog = true;
@@ -76,9 +76,9 @@ void LogManager::logRecord(int level, const char *format, ...)
         static char  buf[LOG_LINE_SIZE];
         std::va_list args;
         ::va_start(args, format);
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
         int n = vsnprintf(buf, LOG_LINE_SIZE, format, args);
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
         int n = vsprintf_s(buf, LOG_LINE_SIZE, format, args);
 #endif
         std::cout << buf;
@@ -135,13 +135,13 @@ void LogManager::openLogStream(int level)
 
 bool LogManager::removeLogFiles()
 {
-    auto checkTime = kgr::get_current_timestamp<chrono::seconds>();
+    auto checkTime = xiso::get_current_timestamp<chrono::seconds>();
     checkTime      = checkTime - m_keepDays * (24 * 60 * 60);
 
-    kgr::filesystem::DirectoryContainer dirContainer(m_filepath.c_str());
-    kgr::filesystem::DirectoryIterator  dirIter = dirContainer.iterator();
+    xiso::filesystem::DirectoryContainer dirContainer(m_filepath.c_str());
+    xiso::filesystem::DirectoryIterator  dirIter = dirContainer.iterator();
     for (dirIter.start(); !dirIter.isDone(); dirIter.toNext()) {
-        kgr::filesystem::DirectoryEntry entry = dirIter.current();
+        xiso::filesystem::DirectoryEntry entry = dirIter.current();
         if (entry.file_name() == "." || entry.file_name() == "..") {
             continue;
         }
@@ -158,7 +158,7 @@ bool LogManager::removeLogFiles()
             timeinfo.tm_mday = atoi(filename.substr(position + 7, 2).c_str());
 
             if (checkTime > mktime(&timeinfo)) {
-                kgr::remove_file((m_filepath + filename).c_str());
+                xiso::remove_file((m_filepath + filename).c_str());
             }
         }
     }
@@ -168,7 +168,7 @@ bool LogManager::removeLogFiles()
 void LogManager::loggerWorkerThread()
 {
     while (m_bRunning) {
-        auto curTime = kgr::get_current_timestamp<chrono::seconds>();
+        auto curTime = xiso::get_current_timestamp<chrono::seconds>();
         if (curTime - m_lastTime > 86400) {
             m_lastTime = curTime - curTime % 86400 - 3600 * 8;
 
@@ -201,4 +201,4 @@ void LogManager::loggerWorkerThread()
     }
 }
 } // namespace log
-} // namespace kgr
+} // namespace xiso

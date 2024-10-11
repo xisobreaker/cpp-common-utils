@@ -11,7 +11,7 @@
 
 #include "base64.h"
 
-namespace kgr {
+namespace xiso {
 namespace crypto {
 
 int base64_encode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen)
@@ -86,4 +86,4 @@ int base64_decode(char *dstBuf, int dstMaxLen, const char *srcBuf, int srcLen)
     return dstLen;
 }
 } // namespace crypto
-} // namespace kgr
+} // namespace xiso

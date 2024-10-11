@@ -1,26 +1,25 @@
-#include "kgr_filesystem.h"
-
 #include "config/platform.h"
-#include "kgr_file.h"
+#include "xiso_file.h"
+#include "xiso_filesystem.h"
 
 #include <cstring>
 
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     #include <dirent.h>
     #include <sys/stat.h>
     #include <unistd.h>
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     #include <Windows.h>
     #include <io.h>
 #endif
 
-namespace kgr {
+namespace xiso {
 namespace filesystem {
 
 void create_directory_recurse(const std::string &directory)
 {
     unsigned long long pos = directory.rfind('/');
-#if defined(KGR_PLATFORM_WINDOWS)
+#if defined(XISO_PLATFORM_WINDOWS)
     if (pos == std::string::npos) {
         pos = directory.rfind('\\');
     }
@@ -28,12 +27,12 @@ void create_directory_recurse(const std::string &directory)
     if (pos != std::string::npos && pos != 0) {
         create_directory_recurse(directory.substr(0, pos));
     }
-    kgr::create_directory(directory.c_str());
+    xiso::create_directory(directory.c_str());
 }
 
 bool remove_directory_recurse(const char *directory)
 {
-#if defined(KGR_PLATFORM_LINUX)
+#if defined(XISO_PLATFORM_LINUX)
     DIR *dir = opendir(directory);
     if (dir == nullptr)
         return false;
@@ -63,7 +62,7 @@ bool remove_directory_recurse(const char *directory)
         return false;
     }
     return true;
-#elif defined(KGR_PLATFORM_WINDOWS)
+#elif defined(XISO_PLATFORM_WINDOWS)
     char tmp_filepath[2048] = {0};
     sprintf_s(tmp_filepath, "%s\\*.*", directory);
     WIN32_FIND_DATAA fileData;
@@ -98,4 +97,4 @@ bool remove_directory_recurse(const char *directory)
 }
 
 } // namespace filesystem
-} // namespace kgr
+} // namespace xiso

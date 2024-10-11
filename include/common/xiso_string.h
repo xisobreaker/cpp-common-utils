@@ -1,7 +1,7 @@
 // =====================================================================================
 //  Copyright (C) 2024 by Jiaxing Shao. All rights reserved
 //
-//  文 件 名:  kgr_string.h
+//  文 件 名:  xiso_string.h
 //  作    者:  Jiaxing Shao, 980853650@qq.com
 //  创建时间:  2024-05-24 17:29:27
 //  描    述:
@@ -15,7 +15,7 @@
 #include <string>
 #include <vector>
 
-namespace kgr {
+namespace xiso {
 
 /**
  * @brief 浮点数按照精度转换为字符串类型
@@ -154,4 +154,4 @@ bool str_endswith(const std::string &str, std::string end);
  * @return false
  */
 bool split_http_url(std::string &domain, std::string &route, const std::string &httpurl);
-} // namespace kgr
+} // namespace xiso

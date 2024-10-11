@@ -1,7 +1,7 @@
 #include "sync_queue.h"
 
-namespace kgr {
+namespace xiso {
 namespace container {
 
 } // namespace container
-} // namespace kgr
+} // namespace xiso

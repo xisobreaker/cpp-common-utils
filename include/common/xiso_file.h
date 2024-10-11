@@ -1,7 +1,7 @@
 // =====================================================================================
 //  Copyright (C) 2024 by Jiaxing Shao. All rights reserved
 //
-//  文 件 名:  kgr_file.h
+//  文 件 名:  xiso_file.h
 //  作    者:  Jiaxing Shao, 980853650@qq.com
 //  创建时间:  2024-05-24 17:28:37
 //  描    述:
@@ -11,7 +11,7 @@
 
 #include <string>
 
-namespace kgr {
+namespace xiso {
 
 /**
  * @brief 获取当前系统文件分隔符
@@ -71,4 +71,4 @@ bool remove_directory(const char *directory);
  */
 bool remove_file(const char *filepath);
 
-} // namespace kgr
+} // namespace xiso

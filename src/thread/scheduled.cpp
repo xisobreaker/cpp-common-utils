@@ -4,7 +4,7 @@
 #include <memory>
 #include <mutex>
 
-namespace kgr {
+namespace xiso {
 
 Scheduled::Scheduled() : m_runningFlag(true)
 {
@@ -66,4 +66,4 @@ void Scheduled::run()
     }
 }
 
-} // namespace kgr
+} // namespace xiso

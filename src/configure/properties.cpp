@@ -1,12 +1,12 @@
 #include "properties.h"
 
-#include "kgr_string.h"
+#include "xiso_string.h"
 
 #include <fstream>
 #include <unordered_map>
 #include <utility>
 
-namespace kgr {
+namespace xiso {
 namespace config {
 
 PropertyTree::PropertyTree()
@@ -83,4 +83,4 @@ bool write_profile(const std::string &filename, const PropertyTree &pt)
 }
 
 } // namespace config
-} // namespace kgr
+} // namespace xiso

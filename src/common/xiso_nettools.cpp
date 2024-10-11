@@ -1,6 +1,5 @@
-#include "kgr_nettools.h"
-
-#include "kgr_types.h"
+#include "xiso_nettools.h"
+#include "xiso_types.h"
 
 #include <arpa/inet.h>
 #include <cassert>
@@ -8,7 +7,7 @@
 #include <endian.h>
 #include <sys/socket.h>
 
-namespace kgr {
+namespace xiso {
 unsigned long long htonll(unsigned long long val)
 {
     if (__BYTE_ORDER == __LITTLE_ENDIAN) {
@@ -85,4 +84,4 @@ void sockaddr_to_ipport(char *buf, size_t size, const struct sockaddr *addr)
     snprintf(buf + end, size - end, ":%u", port);
 }
 
-} // namespace kgr
+} // namespace xiso

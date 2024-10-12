@@ -23,8 +23,10 @@ PropertyValue &PropertyTree::get(std::string section, std::string key)
         std::unordered_map<std::string, PropertyValue> unorderedMap;
         m_properties.insert(std::make_pair(section, unorderedMap));
     }
-    if (m_properties[section].find(key) == m_properties[section].end())
-        m_properties[section].insert(std::make_pair(key, PropertyValue("")));
+    if (m_properties[section].find(key) == m_properties[section].end()) {
+        throw PropertyException("[PropertyTree::get]: not found " + section + "." + key);
+        // m_properties[section].insert(std::make_pair(key, PropertyValue("")));
+    }
     return m_properties[section].at(key);
 }
 

@@ -18,6 +18,22 @@
 namespace xiso {
 namespace config {
 
+class PropertyException : public std::exception
+{
+public:
+    explicit PropertyException(const std::string &errmsg) : m_(errmsg){};
+    ~PropertyException() = default;
+
+public:
+    const char *what() const noexcept override
+    {
+        return m_.what();
+    }
+
+private:
+    std::runtime_error m_;
+};
+
 class PropertyValue
 {
 public:

@@ -21,7 +21,7 @@
  * @param signo 系统信号
  * @param handler 信号处理回调
  */
-void sig_process(int signo, void (*handler)(int));
+void signo_process(int signo, void (*handler)(int));
 
 /**
  * @brief 执行shell命令

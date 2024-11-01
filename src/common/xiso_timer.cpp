@@ -10,7 +10,7 @@ std::chrono::system_clock::time_point timer_to_timepoint(std::time_t timestamp)
     return std::chrono::system_clock::from_time_t(timestamp);
 }
 
-std::string timepoint_format(std::chrono::system_clock::time_point tp)
+std::string timepoint_format(const std::chrono::system_clock::time_point &tp)
 {
     time_t timer = std::chrono::system_clock::to_time_t(tp);
 

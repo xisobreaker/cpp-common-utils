@@ -80,7 +80,7 @@ std::chrono::system_clock::time_point timer_to_timepoint(std::time_t timestamp);
  * @param tp
  * @return std::string YYYY-MM-DD HH:mm:ss.SSSSSS
  */
-std::string timepoint_format(std::chrono::system_clock::time_point tp);
+std::string timepoint_format(const std::chrono::system_clock::time_point &tp);
 
 /**
  * @brief 获取当前格式化后的时间戳

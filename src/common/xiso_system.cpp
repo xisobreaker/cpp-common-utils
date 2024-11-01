@@ -3,7 +3,7 @@
 #if defined(XISO_PLATFORM_LINUX)
     #include <signal.h>
 
-void sig_process(int signo, void (*handler)(int))
+void signo_process(int signo, void (*handler)(int))
 {
     struct sigaction sa;
     sa.sa_handler = handler;

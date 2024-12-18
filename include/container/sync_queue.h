@@ -28,7 +28,7 @@ class SyncQueue
     typedef std::deque<T> self_type;
 
 public:
-    SyncQueue() : m_shutdown(false){};
+    SyncQueue(uint32_t size = 0) : m_maxSize(size), m_shutdown(false){};
     virtual ~SyncQueue(){};
 
 public:
@@ -40,6 +40,11 @@ public:
     void push_back(const T &data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_maxSize > 0 && m_queue.size() >= m_maxSize) {
+            T &t = m_queue.front();
+            delete_queue_object(t);
+            m_queue.pop_front();
+        }
         m_queue.push_back(data);
         m_condition.notify_one();
     }
@@ -52,6 +57,11 @@ public:
     void push_back(const T &&data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
+        if (m_maxSize > 0 && m_maxSize >= m_queue.size()) {
+            T &t = m_queue.front();
+            delete_queue_object(t);
+            m_queue.pop_front();
+        }
         m_queue.push_back(std::move(data));
         m_condition.notify_one();
     }
@@ -151,6 +161,7 @@ private:
     }
 
 private:
+    uint32_t                m_maxSize;
     std::atomic<bool>       m_shutdown;
     std::deque<T>           m_queue;
     mutable std::mutex      m_mutex;

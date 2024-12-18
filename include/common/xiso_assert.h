@@ -13,6 +13,7 @@
 #include <cstring>
 #include <iostream>
 
+// 比较两个对象是否相等
 #define xiso_assert_equal(a, b)                                                                        \
     do {                                                                                               \
         if ((a) != (b)) {                                                                              \
@@ -21,6 +22,43 @@
         }                                                                                              \
     } while (false)
 
+// 比较是否 a 小于 b
+#define xiso_assert_lt(a, b)                                                                           \
+    do {                                                                                               \
+        if ((a) >= (b)) {                                                                              \
+            std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
+            std::abort();                                                                              \
+        }                                                                                              \
+    } while (false)
+
+// 比较是否 a 大于 b
+#define xiso_assert_gt(a, b)                                                                           \
+    do {                                                                                               \
+        if ((a) <= (b)) {                                                                              \
+            std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
+            std::abort();                                                                              \
+        }                                                                                              \
+    } while (false)
+
+// 比较是否 a 小于等于 b
+#define xiso_assert_le(a, b)                                                                           \
+    do {                                                                                               \
+        if ((a) > (b)) {                                                                               \
+            std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
+            std::abort();                                                                              \
+        }                                                                                              \
+    } while (false)
+
+// 比较是否 a 大于等于 b
+#define xiso_assert_ge(a, b)                                                                           \
+    do {                                                                                               \
+        if ((a) < (b)) {                                                                               \
+            std::cerr << "[" << __FILE__ << ":" << __LINE__ << "]: " << a << " != " << b << std::endl; \
+            std::abort();                                                                              \
+        }                                                                                              \
+    } while (false)
+
+// 比较字符串是否 a 等于 b
 #define xiso_assert_strequal(a, b)                                                                     \
     do {                                                                                               \
         if (std::strcmp(a, b) != 0) {                                                                  \

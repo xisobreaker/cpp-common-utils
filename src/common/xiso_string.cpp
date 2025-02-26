@@ -1,5 +1,6 @@
-#include "config/platform.h"
 #include "xiso_string.h"
+
+#include "config/platform.h"
 
 #include <cstdarg>
 #include <cstring>
@@ -8,18 +9,19 @@ namespace xiso {
 
 std::string bytes2hexstr(const unsigned char *buf, unsigned int len)
 {
-    // hex 转换表
-    static const char hex_table[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    static const char hex_table[] = "0123456789ABCDEF";
 
     if (buf == nullptr)
         return "";
 
     std::string message;
+    message.reserve(len * 3);
     for (int i = 0; i < len; i++) {
-        message += hex_table[buf[i] >> 4];
-        message += hex_table[buf[i] & 0x0F];
-        if (len > i + 1)
-            message += ' ';
+        unsigned char byte = buf[i];
+        message.push_back(hex_table[(byte >> 4) & 0x0F]);
+        message.push_back(hex_table[byte & 0x0F]);
+        if (i != len + 1)
+            message.push_back(' ');
     }
     return message;
 }

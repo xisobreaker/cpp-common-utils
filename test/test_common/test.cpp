@@ -125,17 +125,17 @@ void test_exception()
     try {
         throw xiso::XisoException("hello, world!");
     } catch (const std::exception &e) {
-        std::cout << "length: " << strlen(e.what()) << ", error: " << e.what() << std::endl;
+        xiso_assert_strequal("hello, world!", e.what());
+        std::cout << "error: " << e.what() << std::endl;
     }
 
     try {
-        int         value = 999;
-        std::string msg   = "world!";
-        const char  buf[] = "akakakak";
-        std::string msg2  = "world2222";
-        throw xiso::XisoException("hello %d %s %lf %s %s %d %s", 11234, msg, 123.123, buf, "isastring", value, std::move(msg2));
+        int        value = 999;
+        const char buf[] = "akakakak";
+        throw xiso::XisoException("hello %d %lf %s %s %d", 11234, 123.123, buf, "isastring", value);
     } catch (const std::exception &e) {
-        std::cout << "length: " << strlen(e.what()) << ", error: " << e.what() << std::endl;
+        xiso_assert_strequal("hello 11234 123.123000 akakakak isastring 999", e.what());
+        std::cout << "error: " << e.what() << std::endl;
     }
 }
 

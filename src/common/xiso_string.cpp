@@ -20,7 +20,7 @@ std::string bytes2hexstr(const unsigned char *buf, unsigned int len)
         unsigned char byte = buf[i];
         message.push_back(hex_table[(byte >> 4) & 0x0F]);
         message.push_back(hex_table[byte & 0x0F]);
-        if (i != len + 1)
+        if (i + 1 != len)
             message.push_back(' ');
     }
     return message;

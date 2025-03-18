@@ -1,12 +1,14 @@
 #include "test.h"
 
 #include "xiso_assert.h"
+#include "xiso_exception.h"
 #include "xiso_hardware.h"
 #include "xiso_string.h"
 #include "xiso_system.h"
 #include "xiso_timer.h"
 
 #include <chrono>
+#include <exception>
 #include <iostream>
 
 void test_hardware_all()
@@ -118,6 +120,25 @@ void test_timer()
     xiso_assert_equal(microsec, 1717861911100664);
 }
 
+void test_exception()
+{
+    try {
+        throw xiso::XisoException("hello, world!");
+    } catch (const std::exception &e) {
+        std::cout << "length: " << strlen(e.what()) << ", error: " << e.what() << std::endl;
+    }
+
+    try {
+        int         value = 999;
+        std::string msg   = "world!";
+        const char  buf[] = "akakakak";
+        std::string msg2  = "world2222";
+        throw xiso::XisoException("hello %d %s %lf %s %s %d %s", 11234, msg, 123.123, buf, "isastring", value, std::move(msg2));
+    } catch (const std::exception &e) {
+        std::cout << "length: " << strlen(e.what()) << ", error: " << e.what() << std::endl;
+    }
+}
+
 struct testcase_t main_testcases[] = {{test_hardware_all},
                                       {test_system_all},
                                       {test_str_split},
@@ -125,4 +146,5 @@ struct testcase_t main_testcases[] = {{test_hardware_all},
                                       {test_str_format},
                                       {test_str_split_values},
                                       {test_timer},
+                                      {test_exception},
                                       END_OF_TESTCASES};

@@ -12,7 +12,6 @@
 #include <atomic>
 #include <condition_variable>
 #include <deque>
-#include <iostream>
 #include <mutex>
 #include <type_traits>
 
@@ -54,7 +53,7 @@ public:
      *
      * @param data
      */
-    void push_back(const T &&data)
+    void push_back(T &&data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
         if (m_maxSize > 0 && m_maxSize >= m_queue.size()) {
@@ -82,6 +81,22 @@ public:
                 m_queue.pop_front();
                 return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * @brief 弹出所有元素
+     *
+     * @param data_queue
+     * @return true
+     * @return false
+     */
+    bool pop_all(std::deque<T> &data_queue)
+    {
+        if (!m_queue.empty() && !m_shutdown) {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            data_queue = std::move(m_queue);
         }
         return false;
     }

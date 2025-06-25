@@ -11,6 +11,7 @@
 #define _PROPERTY_H_H_H
 
 #include <cstdint>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>

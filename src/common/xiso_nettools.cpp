@@ -1,8 +1,11 @@
 #include "xiso_nettools.h"
+
 #include "xiso_types.h"
 
 #include <arpa/inet.h>
 #include <cassert>
+#include <cstdint>
+#include <cstdio>
 #include <cstring>
 #include <endian.h>
 #include <sys/socket.h>

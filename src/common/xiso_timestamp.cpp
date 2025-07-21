@@ -30,9 +30,9 @@ std::string Timestamp::toString() const
     struct tm localtm;
     localtime_r(&timeval_.tv_sec, &localtm);
 
-    char formatter[32] = {};
+    char formatter[128] = {};
     snprintf(formatter,
-             32,
+             128,
              "%04d-%02d-%02d %02d:%02d:%02d.%06ld",
              localtm.tm_year + 1900,
              localtm.tm_mon + 1,

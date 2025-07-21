@@ -39,7 +39,7 @@ public:
     void push_back(const T &data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
-        if (m_maxSize > 0 && m_queue.size() >= m_maxSize) {
+        if (m_maxSize > 0 && m_maxSize <= m_queue.size()) {
             T &t = m_queue.front();
             delete_queue_object(t);
             m_queue.pop_front();
@@ -56,7 +56,7 @@ public:
     void push_back(T &&data)
     {
         std::lock_guard<std::mutex> lock(m_mutex);
-        if (m_maxSize > 0 && m_maxSize >= m_queue.size()) {
+        if (m_maxSize > 0 && m_maxSize <= m_queue.size()) {
             T &t = m_queue.front();
             delete_queue_object(t);
             m_queue.pop_front();
@@ -102,7 +102,7 @@ public:
     }
 
     /**
-     * @brief 出队列
+     * @brief 阻塞等待出队列
      *
      * @param data
      * @return true
@@ -121,6 +121,28 @@ public:
 
         data = m_queue.front();
         m_queue.pop_front();
+        return true;
+    }
+
+    /**
+     * @brief 阻塞等待弹出所有数据
+     *
+     * @param data_queue
+     * @return true
+     * @return false
+     */
+    bool wait_pop_all(std::deque<T> &data_queue)
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        while (m_queue.empty() && !m_shutdown) {
+            m_condition.wait(lock);
+        }
+
+        if (m_queue.empty() || m_shutdown) {
+            return false;
+        }
+
+        data_queue = std::move(m_queue);
         return true;
     }
 

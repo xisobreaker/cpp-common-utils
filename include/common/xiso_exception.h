@@ -3,6 +3,7 @@
 #include <cstring>
 #include <exception>
 #include <memory>
+#include <string>
 
 namespace xiso {
 

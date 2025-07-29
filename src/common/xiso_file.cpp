@@ -1,5 +1,6 @@
-#include "config/platform.h"
 #include "xiso_file.h"
+
+#include "config/platform.h"
 
 #include <cstring>
 #include <string>

@@ -185,6 +185,11 @@ public:
         return m_queue.empty();
     }
 
+    void reset()
+    {
+        m_shutdown = false;
+    }
+
 private:
     template <typename E = T>
     typename std::enable_if<std::is_pointer<E>::value>::type delete_queue_object(T &obj)

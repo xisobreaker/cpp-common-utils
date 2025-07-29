@@ -35,6 +35,7 @@ set(XISO_COMMON_INCLUDE_DIR
     "${CMAKE_CURRENT_LIST_DIR}/include/crypto"
     "${CMAKE_CURRENT_LIST_DIR}/include/filesystem"
     "${CMAKE_CURRENT_LIST_DIR}/include/logger"
+    "${CMAKE_CURRENT_LIST_DIR}/include/network"
     "${CMAKE_CURRENT_LIST_DIR}/include/thread")
 
 include_directories(${XISO_COMMON_INCLUDE_DIR})

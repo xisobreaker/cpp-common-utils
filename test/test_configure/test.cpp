@@ -3,8 +3,6 @@
 #include "properties.h"
 #include "xiso_assert.h"
 
-#include <iostream>
-
 void test_property_write()
 {
     xiso::config::PropertyTree propertyTree;

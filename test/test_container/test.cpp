@@ -4,8 +4,8 @@
 #include "xiso_assert.h"
 
 #include <chrono>
-#include <iostream>
 #include <memory>
+#include <spdlog/spdlog.h>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -77,4 +77,42 @@ void test_sync_queue2()
     }
 }
 
-struct testcase_t main_testcases[] = {{test_sync_queue}, {test_sync_queue2}, END_OF_TESTCASES};
+void test_sync_queue3()
+{
+    struct DataStruct {
+        int value;
+    };
+
+    constexpr static int queue_size = 100000;
+    constexpr static int thread_num = 10;
+    constexpr static int write_num  = 10000;
+
+    xiso::container::SyncQueue<std::shared_ptr<DataStruct>> data_queue(queue_size);
+    std::thread                                             thread_list[thread_num];
+
+    for (int i = 0; i < thread_num; i++) {
+        thread_list[i] = std::thread([&]() {
+            for (int i = 0; i < write_num; i++) {
+                auto data   = std::make_shared<DataStruct>();
+                data->value = i;
+                data_queue.push_back(data);
+            }
+        });
+    }
+
+    int count = 0;
+    while (count != write_num * thread_num) {
+        std::shared_ptr<DataStruct> data;
+        data_queue.wait_pop_front(data, 100);
+        ++count;
+        spdlog::info("{}, remain: {}", count, data_queue.size());
+    }
+
+    for (int i = 0; i < thread_num; i++) {
+        if (thread_list[i].joinable()) {
+            thread_list[i].join();
+        }
+    }
+}
+
+struct testcase_t main_testcases[] = {{test_sync_queue}, {test_sync_queue2}, {test_sync_queue3}, END_OF_TESTCASES};

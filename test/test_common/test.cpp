@@ -3,11 +3,13 @@
 #include "xiso_assert.h"
 #include "xiso_exception.h"
 #include "xiso_hardware.h"
+#include "xiso_nettools.h"
 #include "xiso_string.h"
 #include "xiso_system.h"
 #include "xiso_timer.h"
 
 #include <chrono>
+#include <cstdlib>
 #include <exception>
 #include <iostream>
 
@@ -139,6 +141,66 @@ void test_exception()
     }
 }
 
+void test_serialize()
+{
+    unsigned char buffer[100] = {0};
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, uint8_t(19)), 1);
+    xiso_assert_equal(xiso::deserialize_numeric<uint8_t>(buffer, 0), 19);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, uint16_t(77)), 2);
+    xiso_assert_equal(xiso::deserialize_numeric<uint16_t>(buffer, 0), 77);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, uint32_t(63)), 4);
+    xiso_assert_equal(xiso::deserialize_numeric<uint32_t>(buffer, 0), 63);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, uint64_t(6241)), 8);
+    xiso_assert_equal(xiso::deserialize_numeric<uint64_t>(buffer, 0), 6241);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, int8_t(119)), 1);
+    xiso_assert_equal(xiso::deserialize_numeric<int8_t>(buffer, 0), 119);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, int16_t(335)), 2);
+    xiso_assert_equal(xiso::deserialize_numeric<int16_t>(buffer, 0), 335);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, int32_t(4693)), 4);
+    xiso_assert_equal(xiso::deserialize_numeric<int32_t>(buffer, 0), 4693);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, int64_t(5357)), 8);
+    xiso_assert_equal(xiso::deserialize_numeric<int64_t>(buffer, 0), 5357);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, float(2115.0)), 4);
+    xiso_assert_equal(xiso::deserialize_numeric<float>(buffer, 0), 2115.0);
+
+    xiso_assert_equal(xiso::serialize_numeric(buffer, 0, double(1248.0)), 8);
+    xiso_assert_equal(xiso::deserialize_numeric<double>(buffer, 0), 1248.0);
+
+    try {
+        uint32_t *pu32 = new uint32_t;
+        *pu32          = 100;
+        xiso::serialize_numeric(buffer, 0, pu32);
+        abort();
+    } catch (const std::exception &e) {
+    }
+
+    try {
+        class TempClass
+        {
+        } cls;
+        xiso::serialize_numeric(buffer, 0, cls);
+        abort();
+    } catch (const std::exception &e) {
+    }
+
+    try {
+        struct TempStruct {
+        } stu;
+        xiso::serialize_numeric(buffer, 0, stu);
+        abort();
+    } catch (const std::exception &e) {
+    }
+}
+
 struct testcase_t main_testcases[] = {{test_hardware_all},
                                       {test_system_all},
                                       {test_str_split},
@@ -147,4 +209,5 @@ struct testcase_t main_testcases[] = {{test_hardware_all},
                                       {test_str_split_values},
                                       {test_timer},
                                       {test_exception},
+                                      {test_serialize},
                                       END_OF_TESTCASES};

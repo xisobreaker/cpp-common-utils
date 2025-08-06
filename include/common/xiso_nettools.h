@@ -10,6 +10,9 @@
 #pragma once
 
 #include <arpa/inet.h>
+#include <cassert>
+#include <stdexcept>
+#include <type_traits>
 
 namespace xiso {
 
@@ -52,5 +55,24 @@ void sockaddr_to_ip(char *buf, size_t size, const struct sockaddr *addr);
  * @param addr
  */
 void sockaddr_to_ipport(char *buf, size_t size, const struct sockaddr *addr);
+
+template <typename T>
+int serialize_numeric(unsigned char *buf, int index, T t)
+{
+    if (!std::is_arithmetic<T>::value)
+        throw std::runtime_error("Not support type.");
+
+    *(reinterpret_cast<T *>(buf + index)) = t;
+    return sizeof(T);
+}
+
+template <typename T>
+T deserialize_numeric(unsigned char *buf, int index)
+{
+    if (!std::is_arithmetic<T>::value)
+        throw std::runtime_error("Not support type.");
+
+    return *(reinterpret_cast<T *>(buf + index));
+}
 
 } // namespace xiso

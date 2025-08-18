@@ -1,5 +1,6 @@
 #include "test.h"
 
+#include "free_queue.h"
 #include "sync_queue.h"
 #include "xiso_assert.h"
 
@@ -105,7 +106,6 @@ void test_sync_queue3()
         std::shared_ptr<DataStruct> data;
         data_queue.wait_pop_front(data, 100);
         ++count;
-        spdlog::info("{}, remain: {}", count, data_queue.size());
     }
 
     for (int i = 0; i < thread_num; i++) {
@@ -113,6 +113,53 @@ void test_sync_queue3()
             thread_list[i].join();
         }
     }
+
+    xiso_assert_equal(write_num * thread_num, count);
 }
 
-struct testcase_t main_testcases[] = {{test_sync_queue}, {test_sync_queue2}, {test_sync_queue3}, END_OF_TESTCASES};
+void test_free_queue()
+{
+    using thread_ptr = std::shared_ptr<std::thread>;
+    xiso::container::LockFreeQueue<int> queue;
+
+    bool stopflag    = false;
+    int  ithread_num = 20;
+    int  othread_num = 1;
+    int  enqueue_num = 100000;
+
+    std::vector<thread_ptr> enqueue_th(ithread_num);
+    std::vector<thread_ptr> dequeue_th(othread_num);
+
+    for (int i = 0; i < ithread_num; ++i) {
+        enqueue_th[i].reset(new std::thread([&]() {
+            for (int i = 0; i < enqueue_num; ++i) {
+                queue.safe_enqueue(i);
+            }
+        }));
+    }
+    for (int i = 0; i < othread_num; ++i) {
+        dequeue_th[i].reset(new std::thread([&]() {
+            int count = 0;
+            while (!stopflag || !queue.empty()) {
+                auto v = queue.dequeue();
+                if (v)
+                    count += 1;
+            }
+            spdlog::info("total: {}", count);
+            xiso_assert_equal(ithread_num * enqueue_num, count);
+        }));
+    }
+
+    // 等待线程结束
+    for (int i = 0; i < ithread_num; ++i) {
+        if (enqueue_th[i]->joinable())
+            enqueue_th[i]->join();
+    }
+    stopflag = true;
+    for (int i = 0; i < othread_num; ++i) {
+        if (dequeue_th[i]->joinable())
+            dequeue_th[i]->join();
+    }
+}
+
+struct testcase_t main_testcases[] = {{test_sync_queue}, {test_sync_queue2}, {test_sync_queue3}, {test_free_queue}, END_OF_TESTCASES};

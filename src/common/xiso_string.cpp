@@ -26,7 +26,7 @@ std::string bytes2hexstr(const unsigned char *buf, unsigned int len)
     return message;
 }
 
-int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen)
+int hexstr2bytes(unsigned char *dst, const char *src, unsigned int srcLen)
 {
     auto hex_value = [](char c) {
         if (c >= '0' && c <= '9') {

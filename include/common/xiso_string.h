@@ -69,12 +69,11 @@ std::string bytes2hexstr(const unsigned char *buf, unsigned int len);
  * @brief hex 字符串转 byte 数组
  *
  * @param dst
- * @param dstLen 最大长度
  * @param src 源数据
  * @param srcLen 源数据长度
  * @return int 实际数据长度
  */
-int hexstr2bytes(unsigned char *dst, unsigned int dstLen, const char *src, unsigned int srcLen);
+int hexstr2bytes(unsigned char *dst, const char *src, unsigned int srcLen);
 
 /**
  * @brief 字符串格式化

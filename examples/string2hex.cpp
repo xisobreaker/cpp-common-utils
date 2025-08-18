@@ -33,7 +33,7 @@ int main()
 
     unsigned char buf[65535] = {0};
 
-    int len = xiso::hexstr2bytes(buf, 1024, str.c_str(), str.length());
+    int len = xiso::hexstr2bytes(buf, str.c_str(), str.length());
     std::cout << xiso::bytes2hexstr(buf, len) << std::endl;
 
     return 0;

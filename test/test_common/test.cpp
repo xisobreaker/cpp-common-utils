@@ -62,7 +62,7 @@ void test_hex_string()
     std::string   str          = "01 00 5E 00 01 8C";
     unsigned char buffer[1024] = {0};
 
-    int len = xiso::hexstr2bytes(buffer, 1024, str.c_str(), str.length());
+    int len = xiso::hexstr2bytes(buffer, str.c_str(), str.length());
     xiso_assert_equal(buffer[0], 0x01);
     xiso_assert_equal(buffer[1], 0x00);
     xiso_assert_equal(buffer[2], 0x5E);

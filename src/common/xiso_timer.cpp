@@ -33,9 +33,7 @@ std::string get_current_format_datetime()
 
 uint64_t string_format_time(const std::string &format, const std::string &datetime)
 {
-    auto conv_ch = [](char c) {
-        return c - '0';
-    };
+    auto conv_ch = [](char c) { return c - '0'; };
 
     std::string seps           = "-:.";
     struct tm   timeinfo       = {0, 0, 0, 0, 0, 0};

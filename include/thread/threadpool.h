@@ -30,10 +30,7 @@ public:
     void     start();
     void     stop();
     bool     addTask(std::shared_ptr<IThreadTask> task);
-    uint16_t taskSize()
-    {
-        return m_taskQueue.size();
-    }
+    uint16_t taskSize() { return m_taskQueue.size(); }
 
 private:
     std::thread                                             *m_threads;     // 线程队列

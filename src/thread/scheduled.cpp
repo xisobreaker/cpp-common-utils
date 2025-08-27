@@ -24,7 +24,9 @@ void Scheduled::addTask(ScheduledFunc &&fn, const std::chrono::time_point<System
     addTask(std::move(fn), tp, std::chrono::microseconds::zero());
 }
 
-void Scheduled::addTask(ScheduledFunc &&fn, const std::chrono::time_point<SystemClock> &tp, const std::chrono::microseconds &period)
+void Scheduled::addTask(ScheduledFunc                             &&fn,
+                        const std::chrono::time_point<SystemClock> &tp,
+                        const std::chrono::microseconds            &period)
 {
     std::lock_guard<std::mutex> guard(m_mutexLock);
 

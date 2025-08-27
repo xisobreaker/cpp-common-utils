@@ -1,11 +1,15 @@
-# 默认样式: LLVM, Google, Chromium, Mozilla, WebKit, Microsoft, GNU
+# 支持样式: LLVM, Google, Chromium, Mozilla, WebKit, Microsoft, GNU
 BasedOnStyle: Microsoft
 # 语言: None, Cpp, Java, JavaScript, ObjC, Proto, TableGen, TextProto
-Language:  Cpp
-# 缩进宽度
+Language: Cpp
+# C++ 语言标准: c++03, c++11, c++14, c++17, c++20, c++23
+Standard: c++14
+
+# 基础格式控制
+ColumnLimit: 120
+UseTab: Never
+TabWidth: 4
 IndentWidth: 4
-# 每行字符的限制，0表示没有限制
-ColumnLimit: 140
 
 # 访问修饰符(public、private等)的偏移量
 AccessModifierOffset: -4
@@ -13,27 +17,41 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 # 数组初始化时，将字段按列对齐
 AlignArrayOfStructures: Left
-# 转义换行符中反斜杠的对齐方式
-AlignEscapedNewlines: Left
+# 是否对齐尾随注释
+AlignTrailingComments: true
+# 是否对齐连续的宏定义（All, AcrossEmptyLines, AcrossComments, AcrossEmptyLinesAndComments, None）
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
 # 连续赋值时，是否对齐所有等号
 AlignConsecutiveAssignments: true
 # 连续声明时，是否对齐所有声明符号
 AlignConsecutiveDeclarations: true
-# 是否允许简单的枚举单独一行
-AllowShortEnumsOnASingleLine: false
-# 是否允许简单的函数单独一行
-AllowShortFunctionsOnASingleLine: false
-# 允许简单的lambda表达式单独一行
-AllowShortLambdasOnASingleLine: Empty
+# 水平对齐二元和三元表达式的操作数
+AlignOperands: true
+# 转义换行符中反斜杠的对齐方式
+AlignEscapedNewlines: Left
 # 要使用的模板声明中断样式
 AlwaysBreakTemplateDeclarations: Yes
+# 允许短的函数放在同一行（Never; Empty, 空函数; InlineOnly, 定义在类中; All）
+AllowShortFunctionsOnASingleLine: InlineOnly
+# 允许短的 if 语句放在同一行
+AllowShortIfStatementsOnASingleLine: false
+# 允许循环语句在单独一行
+AllowShortLoopsOnASingleLine: false
+# 是否允许简单的枚举单独一行
+AllowShortEnumsOnASingleLine: false
+# 允许简单的lambda表达式单独一行
+AllowShortLambdasOnASingleLine: Empty
+
 # 构造函数初始化
 BreakConstructorInitializers: AfterColon
+# 构造函数初始化列表每行一个
 BinPackArguments: false
+# 函数参数每行一个
 BinPackParameters: false
-# 大括号换行方式
+
+# 大括号风格: Attach(附加在语句后)、Linux(新行，缩进)、Mozilla(新行，不缩进)、Allman(新行，缩进)、GNU(新行，缩进2格)、Custom(自定义)
 BreakBeforeBraces: Custom
-# 大括号换行，仅当BreakBeforeBraces为Custom时生效
+# 自定义大括号风格
 BraceWrapping:
   AfterControlStatement: false
   AfterCaseLabel: false
@@ -51,22 +69,29 @@ BraceWrapping:
   SplitEmptyFunction: true
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-# 头文件排序是否启用
-SortIncludes: true
+
+# 命名空间注释
+FixNamespaceComments: true
 # 头文件排序方式
 IncludeBlocks: Regroup
-# 宏定义缩进方式
-IndentPPDirectives: BeforeHash
-# 命名空间缩进方式(All、None)
-NamespaceIndentation: None
 # case 缩进
 IndentCaseLabels: true
-# extern 缩进
+# extern "C" 缩进
 IndentExternBlock: Indent
+# 预处理指令缩进
+IndentPPDirectives: BeforeHash
 # 在块语句后保持空行
 KeepEmptyLinesAtTheStartOfBlocks: false
 # 最大空行间隔
 MaxEmptyLinesToKeep: 1
+# 命名空间缩进方式(All、None)
+NamespaceIndentation: None
 # 指针标志所在位置
 PointerAlignment: Right
+# 头文件排序是否启用
+SortIncludes: false
+
+# clang-format 14
+# 构造函数初始化对齐方式
+PackConstructorInitializers: CurrentLine
 StatementAttributeLikeMacros: []
